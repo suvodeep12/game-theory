@@ -1,5 +1,7 @@
 # Guided experiments
 
+Latest presentation decision: cumulative points at global round N is the primary readout, with recognizable strategy avatars. The weighted comparisons and cooperation measures below remain secondary evidence. Opponent weights affect aggregation rather than the fixed game schedule; raw cumulative totals do not change solely with weights. See [score definitions](score-presentation.md) and [current context](CONTEXT.md).
+
 Status: five topics, controls, and reporting contract agreed through Q53 and implemented in the selected Hands-on Lab interface. Findings are computed at runtime from actual seeded simulations; examples and wording here describe the reporting contract, not predetermined outcomes. See [validation](validation.md).
 
 ## Shared presentation

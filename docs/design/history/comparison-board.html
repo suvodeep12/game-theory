@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Game Theory, Comparison Board design</title>
+<meta name="description" content="Static Comparison Board design for exploring repeated prisoner's dilemma strategies.">
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · shape: app screen · genre: playful · theme: Squeeze (deal 3/3) · signature: synchronized encounter rows · static design preview · v2.0.0 */
+/* Critique: aligned comparison rows keep rules visible without pretending that a tournament has run. */
+:root{--paper:#0b5735;--paper-2:#1d6a46;--paper-3:#08452a;--ink:#f7f8ed;--muted:#d2e8d8;--rule:#438363;--card:#f7f8ed;--card-ink:#173d2a;--card-muted:#486451;--card-rule:#d5dfcf;--accent:#ffba83;--accent-ink:#493020;--focus:#ffe09e;--font-display:"Gabarito",sans-serif;--font-body:"Manrope",sans-serif;--transparent:transparent;--card-highlight:#e8efdf}
+*{box-sizing:border-box}
+html,body{overflow-x:clip}
+body{margin:0;min-height:900px;background:var(--paper);color:var(--ink);font:500 16px/1.5 var(--font-body)}
+button,input,a{font:inherit}
+a{color:inherit;text-underline-offset:5px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+a:active{color:var(--accent)}button:active:not(:disabled){transform:translateY(1px)}
+button{border:0;cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}
+::selection{background:var(--accent);color:var(--accent-ink)}
+.wrap{width:calc(100% - 128px);max-width:1312px;margin:0 auto;min-width:0}
+.top{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule);gap:24px}
+.brand{font:800 26px/1 var(--font-display);letter-spacing:-.025em;text-decoration:none;white-space:nowrap}
+.top nav{display:flex;align-items:center;gap:32px}
+.top nav a{font-size:15px;text-decoration:none;white-space:nowrap}
+.top nav .current{background:var(--paper-2);padding:8px 16px;border-radius:24px}
+.top .static{color:var(--muted);font-size:13px;white-space:nowrap}
+.topics{height:60px;display:flex;align-items:center;gap:32px;overflow-x:auto}
+.topics a{text-decoration:none;color:var(--muted);font-size:15px;padding:8px 0;white-space:nowrap}
+.topics a[aria-current]{color:var(--ink);border-bottom:2px solid var(--accent)}
+.intro{display:flex;align-items:flex-end;justify-content:space-between;margin:12px 0 24px;gap:24px}
+.intro h1{font:800 36px/1.12 var(--font-display);letter-spacing:-.025em;margin:0 0 8px;overflow-wrap:break-word;min-width:0;text-wrap:balance}
+.intro p{margin:0;color:var(--muted);font-size:15px}.intro a{font-size:14px;margin-bottom:4px;white-space:nowrap}
+.setup{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:24px;flex-wrap:wrap}
+fieldset{margin:0;padding:0;border:0;min-width:0}
+legend{font-size:13px;color:var(--muted);margin-bottom:8px}
+.segments{display:flex;background:var(--paper-3);border:1px solid var(--rule);border-radius:12px;padding:4px;gap:4px;flex-wrap:wrap}
+.segments label{position:relative;padding:8px 12px;border-radius:8px;white-space:nowrap;font-size:14px;cursor:pointer;min-height:40px;display:flex;align-items:center}
+.segments input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.segments label:has(input:checked){background:var(--ink);color:var(--card-ink)}
+.segments label:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:3px}
+.fixed{display:flex;align-items:center;gap:24px;padding-top:20px;flex-wrap:wrap}
+.fixed div{display:flex;flex-direction:column}.fixed strong{font-weight:700;font-size:16px}.fixed span{font-size:12px;color:var(--muted)}
+.run{padding:12px 24px;border-radius:12px;color:var(--accent-ink);background:var(--accent);font-weight:700;font-size:15px;margin-top:20px;white-space:nowrap}
+.workspace{background:var(--card);color:var(--card-ink);border-radius:16px;padding:24px 32px;min-width:0}
+.workspace-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;gap:24px}
+.workspace h2{font:800 22px/1.2 var(--font-display);margin:0;letter-spacing:-.02em;text-wrap:balance}
+.workspace-head p{margin:0;font-size:13px;color:var(--card-muted)}
+table{border-collapse:collapse;width:100%;text-align:left;table-layout:fixed}
+thead{font-size:12px;color:var(--card-muted)}
+th{font-weight:700;padding:12px 0;border-bottom:1px solid var(--card-rule);white-space:nowrap}
+th:first-child{width:30%}th:nth-child(2){width:50%}th:last-child{text-align:right}
+td{padding:8px 0;border-bottom:1px solid var(--card-rule);font-size:14px}
+td:first-child{font-weight:700}td:nth-child(2){color:var(--card-muted)}td:last-child{text-align:right;color:var(--card-muted);font-size:13px}
+.selected-row{background:var(--card-highlight)}.selected-row td:first-child{padding-left:12px}.selected-row td:last-child{padding-right:12px}
+.trace{display:grid;grid-template-columns:225px minmax(0,1fr) 230px;gap:32px;padding-top:24px;align-items:center;min-width:0}
+.trace h3{font:800 19px/1.2 var(--font-display);letter-spacing:-.02em;margin:0 0 8px;text-wrap:balance}
+.trace p{margin:0;font-size:12px;line-height:1.6;color:var(--card-muted)}
+.rounds{display:grid;grid-template-columns:155px repeat(4,minmax(0,1fr));gap:8px 12px;align-items:center;text-align:center;font-size:12px;min-width:0}
+.rounds .who{text-align:left;font-weight:700;font-size:13px}.round-label{color:var(--card-muted)}
+.move{display:inline-grid;place-items:center;border:1px solid var(--card-ink);width:28px;height:28px;border-radius:50%;font-weight:700;font-size:13px;margin:0 auto}
+.move.defect{border-radius:4px;background:var(--card-ink);color:var(--card)}
+.scores{font-size:14px;color:var(--card-muted);margin-top:0}.trace-note{padding-left:20px;border-left:1px solid var(--card-rule)}
+.trace-note strong{font-size:13px;display:block;margin-bottom:4px}
+.bottom{display:flex;justify-content:space-between;margin-top:20px;padding-bottom:24px;font-size:12px;color:var(--muted);gap:16px}.bottom a{font-size:12px}
+@media(max-width:1280px){.wrap{width:calc(100% - 64px)}.setup{justify-content:flex-start}.fixed{padding-top:0}.run{margin-top:0;margin-left:auto}.trace{grid-template-columns:200px minmax(0,1fr);gap:24px}.trace-note{grid-column:1/-1;display:flex;gap:12px;border-left:0;padding-left:16px}.trace-note strong{white-space:nowrap}.intro a{white-space:normal}}
+@media(max-width:900px){.top .static{display:none}.topics{gap:24px}.intro{align-items:flex-start;flex-direction:column;gap:12px}.intro h1{font-size:32px}.workspace-head{align-items:flex-start;flex-direction:column;gap:8px}.trace{grid-template-columns:1fr;gap:20px}.trace-note{display:block}.rounds{grid-template-columns:155px repeat(4,minmax(0,1fr))}.bottom{flex-direction:column;gap:8px}th:first-child{width:32%}th:nth-child(2){width:45%}th:last-child{white-space:normal}}
+@media(max-width:600px){body{min-height:0}.wrap{width:calc(100% - 32px)}.top{height:auto;min-height:76px;flex-wrap:wrap;padding:20px 0;gap:20px}.top nav{gap:20px;width:100%;justify-content:space-between}.top nav a{font-size:14px}.topics{height:60px;gap:24px}.intro{margin-top:16px}.intro h1{font-size:30px}.intro p{font-size:16px}.setup{gap:20px}.segments{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.segments label{font-size:13px;padding:8px}.setup fieldset{width:100%}.fixed{gap:20px;align-items:flex-start}.fixed div{flex:1 1 110px}.fixed span{font-size:13px}.run{margin-left:0;width:100%;min-height:44px}.workspace{padding:24px 20px}.workspace-head p{font-size:14px}.workspace h2{font-size:23px}table,tbody,tr,td{display:block}thead{display:none}tr{padding:16px 0;border-bottom:1px solid var(--card-rule)}td{border:0;padding:4px 0;font-size:15px}td:first-child{font-size:16px}td:nth-child(2){padding-top:4px}td:last-child{text-align:left;font-size:13px}td:last-child:before{content:'Mean points per move: ';font-weight:700}.selected-row{padding:16px 12px}.selected-row td:first-child,.selected-row td:last-child{padding-left:0;padding-right:0}.trace{padding-top:24px}.rounds{grid-template-columns:100px repeat(4,minmax(0,1fr));gap:8px 4px}.rounds .who{font-size:14px}.round-label{font-size:14px}.trace-note strong{white-space:normal}.trace p{font-size:13px}.bottom{font-size:13px}.bottom a{font-size:13px}}
+</style>
+</head>
+<body>
+<header class="wrap top"><a class="brand" href="#preview">Game Theory</a><nav aria-label="Main navigation"><a href="#preview">Introduction</a><a class="current" href="#preview" aria-current="page">Explore</a><a href="#preview">How it works</a></nav><span class="static">Static design preview</span></header>
+<main id="preview" class="wrap">
+<nav class="topics" aria-label="Guided topics"><a href="#preview">Who you encounter</a><a href="#preview">Length of encounters</a><a href="#preview" aria-current="page">Mistakes &amp; misunderstanding</a><a href="#preview">Rewards &amp; penalties</a><a href="#preview">Forgiveness</a></nav>
+<section class="intro"><div><h1>Can a small mistake change everything?</h1><p>Compare six ways of responding when actions go wrong or get misunderstood.</p></div><a href="#illustration">See how the rules work</a></section>
+<section class="setup" aria-label="Experiment settings">
+<fieldset><legend>Which errors should the experiment include?</legend><div class="segments"><label><input type="radio" name="errors" value="none">No errors</label><label><input type="radio" name="errors" value="action">Action errors</label><label><input type="radio" name="errors" value="observation">Observation errors</label><label><input type="radio" name="errors" value="both" checked>Both</label></div></fieldset>
+<div class="fixed"><div><strong>0 to 10%</strong><span>Each error rate, per encounter</span></div><div><strong>200 to 500</strong><span>Random rounds per encounter</span></div><div><strong>100</strong><span>Tournament repetitions</span></div></div>
+<button class="run" type="button" disabled aria-describedby="preview-note">Run experiment</button>
+</section>
+<section class="workspace" aria-labelledby="comparison-title">
+<div class="workspace-head"><h2 id="comparison-title">Compare the strategies</h2><p>No tournament results yet. The experiment is not connected in this preview.</p></div>
+<table><thead><tr><th scope="col">Strategy</th><th scope="col">How it responds</th><th scope="col">Mean points per move</th></tr></thead><tbody>
+<tr><td>Always Cooperate</td><td>Cooperate every round.</td><td>Not run</td></tr>
+<tr><td>Always Defect</td><td>Defect every round.</td><td>Not run</td></tr>
+<tr class="selected-row"><td>Tit for Tat</td><td>Cooperate first, then copy the opponent’s last observed action.</td><td>Not run</td></tr>
+<tr><td>Grim Trigger</td><td>Cooperate until a perceived defection, then always defect.</td><td>Not run</td></tr>
+<tr><td>Generous Tit for Tat</td><td>Copy the opponent, with a chance to forgive a defection.</td><td>Not run</td></tr>
+<tr><td>Win-Stay, Lose-Shift</td><td>Keep an action after a favourable payoff; otherwise switch.</td><td>Not run</td></tr>
+</tbody></table>
+<div class="trace" id="illustration"><div><h3>Look inside an encounter</h3><p>Rule illustration, not tournament results.<br>First four rounds, without errors.</p></div>
+<div class="rounds" aria-label="Tit for Tat cooperates in round one, then defects. Always Defect defects in all four rounds."><span></span><span class="round-label">Round 1</span><span class="round-label">Round 2</span><span class="round-label">Round 3</span><span class="round-label">Round 4</span><span class="who">Tit for Tat</span><span class="move">C</span><span class="move defect">D</span><span class="move defect">D</span><span class="move defect">D</span><span class="who">Always Defect</span><span class="move defect">D</span><span class="move defect">D</span><span class="move defect">D</span><span class="move defect">D</span><span class="who scores">Points, in player order</span><span class="scores">0 / 5</span><span class="scores">1 / 1</span><span class="scores">1 / 1</span><span class="scores">1 / 1</span></div>
+<div class="trace-note"><strong>C = cooperate. D = defect.</strong><p>Tit for Tat reacts to the first defection. Both then receive one point each per round.</p></div></div>
+</section>
+<footer class="bottom"><span id="preview-note">Static design preview. Simulations are not connected.</span><a href="#illustration">A model of behaviour, with limits</a></footer>
+</main>
+</body>
+</html>

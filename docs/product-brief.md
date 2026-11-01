@@ -1,5 +1,7 @@
 # Product brief
 
+Later user-confirmed presentation decisions supersede the original result hierarchy: recognizable strategy avatars, rounded nice versus angular nasty identities (nice means never defects first in error-free play), and primary cumulative points at round N across the whole tournament. The user explicitly chose N across all games. Existing weighted averages remain secondary. See [current context](CONTEXT.md), [score definitions](score-presentation.md), and [design history](design/HISTORY.md). The user also requires all project context to remain in the repository.
+
 Status: consolidated product scope confirmed in Q54. A proposed [implementation plan](implementation-plan.md) is now available for review; the approved Hands-on Lab implementation now runs locally. See the [rules](simulation-rules.md), [experiments](guided-experiments.md), and [acceptance criteria](acceptance-criteria.md).
 
 ## Purpose — agreed

@@ -38,7 +38,7 @@ Exact responsive behaviour, result states, keyboard behaviour, and rendering qua
 
 ## Preview handoff
 
-The local [comparison page](http://127.0.0.1:55938/) provides expandable previews and a direction choice. The source sketches are [Field Guide](../.impeccable/mocks/decision/field-guide.html), [Hands-on Lab](../.impeccable/mocks/decision/hands-on.html), and [Comparison Board](../.impeccable/mocks/decision/comparison-board.html). The conventional alternative remains available on the same page.
+The historical comparison page used port 55938; the working app uses port 5173. Its source sketches are now tracked as [Field Guide](design/history/field-guide.html), [Hands-on Lab](design/history/hands-on.html), [Comparison Board](design/history/comparison-board.html), and the [conventional baseline](design/history/canon.html). These are static proposals, not the current app. [Design history](design/HISTORY.md) records subsequent user feedback and revisions.
 
 The parent visually inspected all three desktop renders and the Hands-on Lab mobile render. This checks proposal layout and copy, not a full accessibility audit, every device, or working interactions. Radio inputs can change their native selected state, but there is no script or simulation behind them; the Run action is explicitly disabled.
 

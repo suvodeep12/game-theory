@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-01T17:20:33.313Z",
+  "generatedAt": "2026-11-01T18:00:43.766Z",
   "title": "Design System: Game Theory",
   "extensions": {
     "colorMeta": {
@@ -332,7 +332,7 @@
   ],
   "narrative": {
     "northStar": "Hands-on Lab",
-    "overview": "An approachable science exhibit expressed through ordinary browser controls and inspectable evidence. The approved Squeeze material uses a forest-green working field, a pale encounter stage, peach actions, and rounded heavy headings. Playfulness comes from the type and explicit action marks; explanations remain direct and conditional.\n\nThis is a scan of the implemented source, not a new direction. `PRODUCT.md` owns product truth; the Hands-on Lab surface contract owns its reading order. “Game Theory” remains a working label. Historical static alternatives do not define this system.\n\nUsability revision: one question and run action precede a plain-language cooperation finding. Optional settings, strategy scores, variation, and encounter replay are separately expandable. The playable introduction and simulation rules remain unchanged.",
+    "overview": "An approachable science exhibit expressed through ordinary browser controls and inspectable evidence. The approved Squeeze material uses a forest-green working field, a pale encounter stage, peach actions, and rounded heavy headings. Playfulness comes from the type and explicit action marks; explanations remain direct and conditional.\n\nThis is a scan of the implemented source, not a new direction. `PRODUCT.md` owns product truth; the Hands-on Lab surface contract owns its reading order. “Game Theory” remains a working label. Historical static alternatives do not define this system.\n\nUsability revision: one question and run action precede a plain-language cooperation finding. Optional settings, strategy scores, variation, and encounter replay are separately expandable. The playable introduction and simulation rules remain unchanged.\n\nThe latest user-confirmed result hierarchy leads with six persistent strategy avatars and raw cumulative points after N rounds across all tournament games. Five rounded nice identities contrast with angular Always Defect. Nice means never defects first in error-free play. Cooperation and weighted averages remain expandable; scores show playing time and fixed-schedule limitations. Source art, exact prompts and current screenshots are tracked in the repository.",
     "keyCharacteristics": [
       "Chromatic working field and a pale, legible encounter stage.",
       "Heavy rounded headings paired with compact, readable explanations.",

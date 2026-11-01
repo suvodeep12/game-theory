@@ -2,13 +2,23 @@
 
 1 November 2026. This report describes the current local build, not a public release or a validated model of human behaviour.
 
+## Latest revision: avatars, cumulative scores and durable context
+
+The user selected nice = never defects first (classified in error-free play), distinct nice/nasty avatar families, and primary cumulative points after N rounds across the whole tournament. N counts rounds across all games. The new scoreboard shows six identities with raw points and rounds played, and an exact global cursor over the completed tournament. Encounter totals remain separate. The original weighted averages and cooperation values remain inspectable. This supersedes the cooperation-first result hierarchy described in the earlier revision below.
+
+`npm test`: 13 tests pass, including zero, partial and final tournament sums, both self-play roles, the 2N player-round identity, exact partial-game replay, encounter totals and invalid cursors. `npm run build`: type check and production output pass. Earlier counts of 12 tests below refer to the previous implementation.
+
+The latest headless Edge verification matches displayed raw points/rounds to independent encounter-summary sums, checks zero/first/final timeline positions and identical raw totals for weight-only changes, verifies selected-round encounter totals and self-play labels, confirms six sprite positions plus real transparent background/ring hole, and checks 360/768/1440px document overflow. Tracked [browser evidence](verification/avatar-scores-browser.json) and [current screenshots](design/current/) contain the actual values. Desktop and phone score images and the encounter image were inspected. No claim of beginner recognition or comprehension follows from these checks.
+
+The production raster and exact prompts are tracked in [avatar provenance](design/avatars/v2-provenance.md). [CONTEXT.md](CONTEXT.md) and [AGENTS.md](../AGENTS.md) preserve all material project context in the repository. Historical proposals and review reports are tracked in [design history](design/HISTORY.md). No findings were suppressed by this change; Impeccable hooks remained enabled, with repetitive hints automatically capped by the hook after multiple edits. No new independent finish review covers this revision.
+
 ## Working scope
 
 React/TypeScript with a Vite static build, pure TypeScript engine, one Web Worker per active job, and no backend. All five guided topics are connected: opponent mix, naturally sampled lengths, errors, fixed incentives, and forgiveness. The introduction is playable and skippable.
 
 The app includes 100 repetitions per condition, 21 encounters per repetition, exact replay of a selected encounter, all 100 repetition values, weighted individual/collective measures, actual cooperation, benefit gaps, paired differences, qualified analogies, versioned seeded links, progress, cancellation, and stale-result notices. Future cross-encounter memory and learning remain out of scope.
 
-Fonts are self-hosted under `public/fonts` with their original OFL notices. Sources are the [Gabarito](https://raw.githubusercontent.com/google/fonts/main/ofl/gabarito/OFL.txt) and [Manrope](https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/OFL.txt) notices; the exact served font URLs are recorded in `.cache/font-source.css` from the Google Fonts stylesheet used for the approved preview. No raster assets ship in the application.
+Fonts are self-hosted under `public/fonts` with their OFL notices. Sources are the [Gabarito](https://raw.githubusercontent.com/google/fonts/main/ofl/gabarito/OFL.txt) and [Manrope](https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/OFL.txt) notices. The latest revision ships one generated transparent avatar atlas; [its provenance](design/avatars/v2-provenance.md) is tracked. Earlier versions shipped no raster assets.
 
 ## Automated model and link checks
 

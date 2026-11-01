@@ -1,5 +1,7 @@
 # Simulation rules
 
+Current presentation: the user later selected raw cumulative points after N rounds across all tournament games as the primary readout. This does not alter the simulated games or the weighted measures defined below. Exact cursor order, self-play counting, avatar classification and limits are defined in [score presentation](score-presentation.md); [CONTEXT.md](CONTEXT.md) records the decision and its precedence.
+
 Status: agreed v1 model, implemented and checked locally. See [validation](validation.md) for evidence and remaining limits. This does not establish predictions about human behaviour.
 
 ## Vocabulary

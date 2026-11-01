@@ -1,0 +1,11 @@
+# Verification evidence
+
+Current model/link/score checks use `npm test`; build/type checking uses `npm run build`. These require only the pinned project dependencies. Thirteen tests passed for the avatar/cumulative-score revision.
+
+[verify-browser.mjs](../../scripts/verify-browser.mjs) is the tracked source of the latest headless browser self-check. Start the app with `npm run dev`, provide a Chromium/Edge executable in `CHROME_PATH` and an available `puppeteer-core` module, then run `npm run verify:browser`. It imports `puppeteer-core` normally unless `PUPPETEER_MODULE` names an existing external module URL. No browser tooling is installed automatically, and it is not an application dependency.
+
+The script exercises the actual dev app through its worker, compares cumulative scores/playing time with independent encounter-summary sums, checks N=0 and the first self-play round, checks weight-only conditions have identical raw totals, checks sprite positions/transparency, encounter totals and self-play labels, and document widths at 360, 768 and 1440 pixels. It refreshes [JSON evidence](avatar-scores-browser.json) and the three [current screenshots](../design/current/). This fixture uses seed `curiosity`, both error types, 10% forgiveness and equal opponent weights; expected values in JSON describe that fixture, not universal outcomes.
+
+The dev check uses source-module imports, so it targets the dev server. For built files, run `npm run build`, serve them with `npm run preview -- --port 4173`, then run `node scripts/verify-production.mjs` with the same browser/driver environment. This tracked smoke check compares raw totals to the recorded dev fixture, checks four cooperation values, avatar loading, all 100 repetition rows, mobile overflow, external requests and page errors. Its [production evidence](production-browser.json) is separate from source checks. Previous cached checks and older independent review verdicts describe earlier UI states and do not certify the current design.
+
+Headless Edge is the verified browser. No physical device, Safari/Firefox, screen-reader assessment, formal WCAG certification, recognition study or beginner comprehension result has been established. Do not substitute screenshots or passing arithmetic tests for those findings.

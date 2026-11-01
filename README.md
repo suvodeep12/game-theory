@@ -4,6 +4,10 @@ Local v1 implemented · 1 November 2026 · Hands-on Lab selected. "Game Theory" 
 
 A public, account-free website where complete beginners can explore repeated prisoner's dilemma tournaments, inspect what happened, and draw qualified conclusions. Exploration is the goal; cooperation winning is not a required outcome.
 
+**Project handoff:** start with [the complete context index](docs/CONTEXT.md). It records current requirements, decisions, design history, work status, validation, unresolved questions, and next steps. [AGENTS.md](AGENTS.md) requires contributors to keep that context in this repository.
+
+Run `npm run check:context` to check local file targets in the tracked Markdown documentation. This checks links, not the completeness or truth of the context; contributors must review those too.
+
 This React/TypeScript app runs seeded tournaments entirely in the browser. The user-approved model and design are documented below. The app is available locally; public hosting has not been configured.
 
 ## Run locally
@@ -11,6 +15,8 @@ This React/TypeScript app runs seeded tournaments entirely in the browser. The u
 Use Node 22.12 or newer on the Node 22 line (verified with 22.23.1). Install the pinned lockfile dependencies with `npm ci`, then run `npm run dev`. Use `npm test` for engine/link checks and `npm run build` for type checking plus static output in `dist`. `npm run preview` serves that build locally; it is not a production hosting service.
 
 There is no backend, secret key, account configuration, or database. The interface, worker, and fonts are served from the same origin.
+
+The optional `npm run verify:browser` reproduces the avatar/score browser checks and refreshes tracked screenshots/evidence. It requires the dev server at port 5173, an available `puppeteer-core` installation, and `CHROME_PATH` pointing to a Chromium/Edge executable. If the browser driver is installed outside this project, set `PUPPETEER_MODULE` to its importable module URL. The app does not depend on this optional verification tool. See [verification details](docs/verification/README.md).
 
 ## Read the draft
 
@@ -26,7 +32,7 @@ There is no backend, secret key, account configuration, or database. The interfa
 
 ## Avatar concept
 
-The proposed [six-character cast sheet](docs/design/avatars/cast-v1.png) explores distinct strategy identities. [Design notes and generation prompt](docs/design/avatars/README.md) record its intended use and limits. This is a concept awaiting review; the characters are not integrated into the app yet.
+Six strategy identities now appear in tournament scores and encounters. Nice means never defects first in error-free play: five rounded characters contrast with the angular Always Defect character. The primary score is cumulative points after N rounds across all tournament games, with rounds played shown alongside it. See [score definitions](docs/score-presentation.md), [production art and provenance](docs/design/avatars/v2-provenance.md), and the historical [first cast sheet](docs/design/avatars/cast-v1.png). Recognition and comprehension remain unverified with beginners.
 
 ## Status labels
 

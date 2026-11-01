@@ -1,0 +1,25 @@
+{
+  "browser": "Edg/156.0.4314.58",
+  "fixture": {
+    "version": "1",
+    "topic": "mistakes",
+    "seed": "curiosity",
+    "mode": "both",
+    "forgiveness": 0.1,
+    "weights": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "rawScoresMatch": true,
+  "fourCooperationValuesMatch": true,
+  "avatarLoads": true,
+  "repetitionRows": 100,
+  "mobileOverflow": false,
+  "externalRequests": [],
+  "pageErrors": []
+}

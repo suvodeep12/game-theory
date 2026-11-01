@@ -1,5 +1,7 @@
 # Product
 
+Start with [the complete repository context](docs/CONTEXT.md). Later user-confirmed presentation choices are distinct avatars, nice defined as never defects first in error-free play, and primary cumulative points after N rounds across all tournament games. Exact definitions, limitations and precedence are in [score presentation](docs/score-presentation.md). The user requires context to stay in this repository; see [AGENTS.md](AGENTS.md).
+
 <!-- impeccable:product-schema 1 -->
 
 ## Platform

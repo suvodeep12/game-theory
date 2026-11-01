@@ -1,5 +1,7 @@
 # Strategy avatar cast — concept 1
 
+Historical concept. The later user-defined nice/nasty visual families and cumulative score screen use [production v2](v2-provenance.md). Statements below about non-integration and pending approval describe this first concept, not the current application.
+
 ![Six distinct abstract characters, each paired with a strategy name and rule, plus a smaller repeat and grayscale silhouette.](cast-v1.png)
 
 Created on 1 November 2026 using the built-in image generation tool. This is a proposal for review, not an implemented app screen. The application currently uses text strategy identities.
