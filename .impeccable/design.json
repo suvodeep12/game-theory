@@ -1,0 +1,371 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-01T17:20:33.313Z",
+  "title": "Design System: Game Theory",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "primary",
+        "displayName": "Paper",
+        "tonalRamp": [
+          "oklch(15.0% 0.0387 157.56)",
+          "oklch(26.4% 0.0681 157.56)",
+          "oklch(37.9% 0.0902 157.56)",
+          "oklch(49.3% 0.0902 157.56)",
+          "oklch(60.7% 0.0902 157.56)",
+          "oklch(72.1% 0.0902 157.56)",
+          "oklch(83.6% 0.0592 157.56)",
+          "oklch(95.0% 0.0180 157.56)"
+        ]
+      },
+      "paper-2": {
+        "role": "primary",
+        "displayName": "Paper 2",
+        "tonalRamp": [
+          "oklch(15.0% 0.0406 158.62)",
+          "oklch(26.4% 0.0714 158.62)",
+          "oklch(37.9% 0.0947 158.62)",
+          "oklch(49.3% 0.0947 158.62)",
+          "oklch(60.7% 0.0947 158.62)",
+          "oklch(72.1% 0.0947 158.62)",
+          "oklch(83.6% 0.0621 158.62)",
+          "oklch(95.0% 0.0189 158.62)"
+        ]
+      },
+      "paper-3": {
+        "role": "primary",
+        "displayName": "Paper 3",
+        "tonalRamp": [
+          "oklch(15.0% 0.0320 159.06)",
+          "oklch(26.4% 0.0563 159.06)",
+          "oklch(37.9% 0.0747 159.06)",
+          "oklch(49.3% 0.0747 159.06)",
+          "oklch(60.7% 0.0747 159.06)",
+          "oklch(72.1% 0.0747 159.06)",
+          "oklch(83.6% 0.0490 159.06)",
+          "oklch(95.0% 0.0149 159.06)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.0062 110.87)",
+          "oklch(26.4% 0.0110 110.87)",
+          "oklch(37.9% 0.0145 110.87)",
+          "oklch(49.3% 0.0145 110.87)",
+          "oklch(60.7% 0.0145 110.87)",
+          "oklch(72.1% 0.0145 110.87)",
+          "oklch(83.6% 0.0095 110.87)",
+          "oklch(95.0% 0.0029 110.87)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "tonalRamp": [
+          "oklch(15.0% 0.0115 152.34)",
+          "oklch(26.4% 0.0203 152.34)",
+          "oklch(37.9% 0.0269 152.34)",
+          "oklch(49.3% 0.0269 152.34)",
+          "oklch(60.7% 0.0269 152.34)",
+          "oklch(72.1% 0.0269 152.34)",
+          "oklch(83.6% 0.0176 152.34)",
+          "oklch(95.0% 0.0054 152.34)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "tonalRamp": [
+          "oklch(15.0% 0.0308 159.94)",
+          "oklch(26.4% 0.0542 159.94)",
+          "oklch(37.9% 0.0719 159.94)",
+          "oklch(49.3% 0.0719 159.94)",
+          "oklch(60.7% 0.0719 159.94)",
+          "oklch(72.1% 0.0719 159.94)",
+          "oklch(83.6% 0.0471 159.94)",
+          "oklch(95.0% 0.0144 159.94)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Accent",
+        "tonalRamp": [
+          "oklch(15.0% 0.0458 59.20)",
+          "oklch(26.4% 0.0805 59.20)",
+          "oklch(37.9% 0.1068 59.20)",
+          "oklch(49.3% 0.1068 59.20)",
+          "oklch(60.7% 0.1068 59.20)",
+          "oklch(72.1% 0.1068 59.20)",
+          "oklch(83.6% 0.0701 59.20)",
+          "oklch(95.0% 0.0214 59.20)"
+        ]
+      },
+      "accent-2": {
+        "role": "primary",
+        "displayName": "Accent 2",
+        "tonalRamp": [
+          "oklch(15.0% 0.0507 59.49)",
+          "oklch(26.4% 0.0892 59.49)",
+          "oklch(37.9% 0.1183 59.49)",
+          "oklch(49.3% 0.1183 59.49)",
+          "oklch(60.7% 0.1183 59.49)",
+          "oklch(72.1% 0.1183 59.49)",
+          "oklch(83.6% 0.0776 59.49)",
+          "oklch(95.0% 0.0237 59.49)"
+        ]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "Accent Ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.0185 59.94)",
+          "oklch(26.4% 0.0325 59.94)",
+          "oklch(37.9% 0.0431 59.94)",
+          "oklch(49.3% 0.0431 59.94)",
+          "oklch(60.7% 0.0431 59.94)",
+          "oklch(72.1% 0.0431 59.94)",
+          "oklch(83.6% 0.0283 59.94)",
+          "oklch(95.0% 0.0086 59.94)"
+        ]
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Focus",
+        "tonalRamp": [
+          "oklch(15.0% 0.0477 95.17)",
+          "oklch(26.4% 0.0839 95.17)",
+          "oklch(37.9% 0.1112 95.17)",
+          "oklch(49.3% 0.1112 95.17)",
+          "oklch(60.7% 0.1112 95.17)",
+          "oklch(72.1% 0.1112 95.17)",
+          "oklch(83.6% 0.0730 95.17)",
+          "oklch(95.0% 0.0222 95.17)"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Card",
+        "tonalRamp": [
+          "oklch(15.0% 0.0062 110.87)",
+          "oklch(26.4% 0.0110 110.87)",
+          "oklch(37.9% 0.0145 110.87)",
+          "oklch(49.3% 0.0145 110.87)",
+          "oklch(60.7% 0.0145 110.87)",
+          "oklch(72.1% 0.0145 110.87)",
+          "oklch(83.6% 0.0095 110.87)",
+          "oklch(95.0% 0.0029 110.87)"
+        ]
+      },
+      "card-ink": {
+        "role": "neutral",
+        "displayName": "Card Ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.0233 160.55)",
+          "oklch(26.4% 0.0410 160.55)",
+          "oklch(37.9% 0.0544 160.55)",
+          "oklch(49.3% 0.0544 160.55)",
+          "oklch(60.7% 0.0544 160.55)",
+          "oklch(72.1% 0.0544 160.55)",
+          "oklch(83.6% 0.0357 160.55)",
+          "oklch(95.0% 0.0109 160.55)"
+        ]
+      },
+      "card-muted": {
+        "role": "neutral",
+        "displayName": "Card Muted",
+        "tonalRamp": [
+          "oklch(15.0% 0.0176 158.45)",
+          "oklch(26.4% 0.0309 158.45)",
+          "oklch(37.9% 0.0410 158.45)",
+          "oklch(49.3% 0.0410 158.45)",
+          "oklch(60.7% 0.0410 158.45)",
+          "oklch(72.1% 0.0410 158.45)",
+          "oklch(83.6% 0.0269 158.45)",
+          "oklch(95.0% 0.0082 158.45)"
+        ]
+      },
+      "card-rule": {
+        "role": "neutral",
+        "displayName": "Card Rule",
+        "tonalRamp": [
+          "oklch(15.0% 0.0097 145.38)",
+          "oklch(26.4% 0.0170 145.38)",
+          "oklch(37.9% 0.0226 145.38)",
+          "oklch(49.3% 0.0226 145.38)",
+          "oklch(60.7% 0.0226 145.38)",
+          "oklch(72.1% 0.0226 145.38)",
+          "oklch(83.6% 0.0148 145.38)",
+          "oklch(95.0% 0.0045 145.38)"
+        ]
+      },
+      "card-well": {
+        "role": "neutral",
+        "displayName": "Card Well",
+        "tonalRamp": [
+          "oklch(15.0% 0.0068 130.42)",
+          "oklch(26.4% 0.0120 130.42)",
+          "oklch(37.9% 0.0159 130.42)",
+          "oklch(49.3% 0.0159 130.42)",
+          "oklch(60.7% 0.0159 130.42)",
+          "oklch(72.1% 0.0159 130.42)",
+          "oklch(83.6% 0.0105 130.42)",
+          "oklch(95.0% 0.0032 130.42)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Desktop question heading; responsive sizes are documented in DESIGN.md."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Subsection headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Explanations and normal copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Compact evidence and control text."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "button-background",
+        "value": "background-color 120ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Primary and secondary button background transitions; reduced-motion media query nearly eliminates duration."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "app-medium",
+        "value": "1100px"
+      },
+      {
+        "name": "app-phone",
+        "value": "720px"
+      },
+      {
+        "name": "base-container-medium",
+        "value": "60rem"
+      },
+      {
+        "name": "base-container-small",
+        "value": "40rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Run experiment",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Native action with hover, keyboard focus, active and disabled states.",
+      "html": "<button class=\"ds-button-primary\" type=\"button\">Run experiment</button>",
+      "css": ".ds-button-primary{min-height:44px;padding:8px 16px;border:0;border-radius:var(--radius-control);cursor:pointer;transition:background-color 120ms cubic-bezier(.16,1,.3,1);font-family:var(--font-body);font-weight:700;background:var(--color-accent);color:var(--color-accent-ink);}.ds-button-primary:hover{background:var(--color-accent-2)}.ds-button-primary:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}.ds-button-primary:active:not(:disabled){transform:translateY(1px)}.ds-button-primary:disabled{opacity:.55;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-button-primary{transition-duration:.01ms}}"
+    },
+    {
+      "name": "Look inside this condition",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Native action with hover, keyboard focus, active and disabled states.",
+      "html": "<button class=\"ds-button-secondary\" type=\"button\">Look inside this condition</button>",
+      "css": ".ds-button-secondary{min-height:44px;padding:8px 16px;border:0;border-radius:var(--radius-control);cursor:pointer;transition:background-color 120ms cubic-bezier(.16,1,.3,1);font-family:var(--font-body);font-weight:700;background:var(--color-paper);color:var(--color-ink);box-shadow:inset 0 0 0 1px var(--color-rule);}.ds-button-secondary:hover{background:var(--color-paper-2)}.ds-button-secondary:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}.ds-button-secondary:active:not(:disabled){transform:translateY(1px)}.ds-button-secondary:disabled{opacity:.55;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-button-secondary{transition-duration:.01ms}}"
+    },
+    {
+      "name": "Text action",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Underlined, unfilled secondary action.",
+      "html": "<button type=\"button\" class=\"ds-text\">Skip to experiments</button>",
+      "css": ".ds-text{min-height:44px;padding:8px 16px;border:0;border-radius:var(--radius-control);cursor:pointer;transition:background-color 120ms cubic-bezier(.16,1,.3,1);font-family:var(--font-body);font-weight:700;border-radius:0;padding:8px 0;background:transparent;color:var(--color-ink);text-decoration:underline;text-underline-offset:4px}.ds-text:hover{color:var(--color-accent)}.ds-text:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}.ds-text:active{transform:translateY(1px)}.ds-text:disabled{opacity:.55;cursor:not-allowed}"
+    },
+    {
+      "name": "Number field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Native numeric input with a visible label.",
+      "html": "<label class=\"ds-field\">Repetition<input type=\"number\" min=\"1\" max=\"100\" value=\"1\"></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:8px;font:500 14px/1.55 var(--font-body);color:var(--color-ink)}.ds-field input{width:90px;min-height:44px;padding:8px 12px;background:var(--color-paper-3);color:var(--color-ink);border:1px solid var(--color-muted);border-radius:var(--radius-control);font:inherit}.ds-field input:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}"
+    },
+    {
+      "name": "Main navigation",
+      "kind": "nav",
+      "refersTo": "button-text",
+      "description": "Compact text navigation with an active inset underline.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main\"><button type=\"button\" class=\"ds-nav-active\">Introduction</button><button type=\"button\">Explore</button><a href=\"#model\">How it works</a></nav>",
+      "css": ".ds-nav{display:flex;flex-wrap:wrap;align-items:center;gap:32px;font:500 15px/1.55 var(--font-body);color:var(--color-ink)}.ds-nav button{border:0;border-radius:0;min-height:44px;padding:8px 0;background:transparent;color:inherit;font:700 15px/1.55 var(--font-body);cursor:pointer}.ds-nav a{color:inherit;text-decoration:none}.ds-nav .ds-nav-active{box-shadow:inset 0 -2px var(--color-accent)}.ds-nav button:hover,.ds-nav a:hover{color:var(--color-accent)}.ds-nav button:focus-visible,.ds-nav a:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}.ds-nav button:active{transform:translateY(1px)}"
+    },
+    {
+      "name": "Question selector",
+      "kind": "custom",
+      "refersTo": "input",
+      "description": "A labelled native selector presents one guided question at a time.",
+      "html": "<label class=\"ds-picker\">Choose a question<select><option>Can a small mistake change everything?</option><option>When does forgiveness help?</option></select></label>",
+      "css": ".ds-picker{display:flex;flex-direction:column;gap:8px;color:var(--color-muted);font:500 14px/1.55 var(--font-body)}.ds-picker select{min-height:44px;max-width:100%;border:1px solid var(--color-muted);border-radius:var(--radius-control);padding:8px 12px;background:var(--color-paper-3);color:var(--color-ink);font:inherit}.ds-picker select:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}"
+    },
+    {
+      "name": "Encounter stage",
+      "kind": "card",
+      "refersTo": "stage",
+      "description": "Pale evidence ground with its local forest focus color.",
+      "html": "<section class=\"ds-stage\" aria-label=\"Rule illustration\"><h2>Tit for Tat meets Always Defect</h2><p>Illustrative rounds, not tournament results.</p><p>C means cooperate. D means defect.</p></section>",
+      "css": ".ds-stage{--color-focus:var(--color-card-ink);background:var(--color-card);color:var(--color-card-ink);border-radius:var(--radius-card);padding:24px}.ds-stage h2{margin:0;font:800 24px/1.2 var(--font-display);letter-spacing:-.025em}.ds-stage p{margin:8px 0 0;color:var(--color-card-muted);font:500 14px/1.55 var(--font-body)}@media(max-width:720px){.ds-stage{padding:24px 16px}}"
+    },
+    {
+      "name": "Action marks",
+      "kind": "custom",
+      "refersTo": "stage",
+      "description": "Text and shape distinguish the two game actions without relying on color.",
+      "html": "<div class=\"ds-marks\"><span class=\"ds-mark\" aria-label=\"Cooperate\">C</span><span>Cooperate</span><span class=\"ds-mark ds-defect\" aria-label=\"Defect\">D</span><span>Defect</span></div>",
+      "css": ".ds-marks{display:flex;align-items:center;gap:8px;background:var(--color-card);color:var(--color-card-ink);font:500 14px/1.55 var(--font-body)}.ds-mark{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex-shrink:0;border:2px solid var(--color-card-ink);border-radius:50%;font:800 20px/1 var(--font-display)}.ds-defect{border-radius:6px;background:var(--color-card-well)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Hands-on Lab",
+    "overview": "An approachable science exhibit expressed through ordinary browser controls and inspectable evidence. The approved Squeeze material uses a forest-green working field, a pale encounter stage, peach actions, and rounded heavy headings. Playfulness comes from the type and explicit action marks; explanations remain direct and conditional.\n\nThis is a scan of the implemented source, not a new direction. `PRODUCT.md` owns product truth; the Hands-on Lab surface contract owns its reading order. “Game Theory” remains a working label. Historical static alternatives do not define this system.\n\nUsability revision: one question and run action precede a plain-language cooperation finding. Optional settings, strategy scores, variation, and encounter replay are separately expandable. The playable introduction and simulation rules remain unchanged.",
+    "keyCharacteristics": [
+      "Chromatic working field and a pale, legible encounter stage.",
+      "Heavy rounded headings paired with compact, readable explanations.",
+      "Familiar controls and explicit, colour-independent C/D action marks.",
+      "Measured results, their conditions, and their limitations remain inspectable."
+    ],
+    "rules": [
+      {
+        "name": "The Two Grounds Rule",
+        "body": "Use the ink pair belonging to the current ground; pale stages must not inherit the page's pale text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Explicit Action Rule",
+        "body": "Pair C/D symbols with their written meanings and earned points; colour is not the sole carrier of the distinction.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Evidence Rule",
+        "body": "Use ground changes and rules to separate evidence; do not introduce raised-card stacks into this incumbent surface.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** use the matching forest or pale-surface ink pair and visible keyboard focus.",
+      "**Do** preserve explicit action meanings, labelled conditions, table captions, and local scroll affordances.",
+      "**Do** keep findings qualified and distinguish the opening illustration from completed tournament evidence.",
+      "**Do** reuse the self-hosted heading/body pairing and compact spacing rhythm."
+    ],
+    "donts": [
+      "**Don't** encode cooperate/defect or runtime status through colour alone.",
+      "**Don't** turn historical static alternatives or unused source tokens into new visual authority.",
+      "**Don't** present the design scan as deployment, formal accessibility approval, physical-device validation, or beginner-comprehension evidence."
+    ]
+  }
+}
