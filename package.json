@@ -7,8 +7,7 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "node --experimental-strip-types --test tests/engine.test.ts tests/share.test.ts tests/scores.test.ts",
-    "verify:browser": "node scripts/verify-browser.mjs",
+    "test": "node --experimental-strip-types --test tests/engine.test.ts tests/evolution.test.ts",
     "check:context": "node scripts/check-context.mjs"
   },
   "dependencies": {

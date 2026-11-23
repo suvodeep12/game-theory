@@ -1,9 +1,13 @@
-# Current local review — avatar and score revision
+# Current local review — evolution grid
 
-1 November 2026. Local visual/interaction review, not independent approval.
+23 November 2026. Local visual/interaction review by the implementing agent, not independent approval.
 
-The user's explicit requests were distinct nice/nasty identities, nice = never defects first, visible points, cumulative scores after N rounds across all tournament games, and all project context in the repository. The desktop/phone score captures and encounter capture show the implemented interpretation. Five rounded identities and one angular identity remain labelled by strategy. Points stay attached to the same identity. N is adjustable and the scoring unit, playing-time difference, self-play counting and opponent-weight limitation are explicit.
+The [desktop capture](evolution-desktop.png) shows generation 0 of *One bad apple* at 1440 px (headless Edge does not advance the animation). The [phone capture](evolution-phone.jpg) shows the opening generations at 375 px with the transport bar wrapped to two rows above the world, the red wave starting around the defector, and the timeline beneath.
 
-Desktop uses two flat score columns and phone uses one linear list. Main scores are visible without expanding a technical table. The range and numeric input are labelled. Encounter totals are separate from tournament totals and both player instances remain labelled in self-play. Detailed normalized metrics and full evidence remain available. The app preserves its forest/pale/peach visual system and local fonts. No findings were suppressed; the hook's repeated-hint cap is not a review verdict.
+The incumbent visual system is kept: forest-green paper, peach primary actions, Gabarito/Manrope, the v2 avatar atlas. New elements: six strategy colours matched to the avatars (Always Cooperate lightened to apricot and Win-Stay, Lose-Shift shifted pink so they stay distinct as small cells), rounded cells with eyes for nice strategies and sharp squares for Always Defect, cell brightness by score, storm wash with falling streaks, and a share bar in each palette row.
 
-The source and arithmetic checks are recorded in [validation](../../validation.md) and [browser evidence](../../verification/avatar-scores-browser.json). No unresolved local defect was identified in this pass. Recognition, beginner comprehension, physical devices, formal accessibility, and independent review of this newest layout remain unverified. The user's earlier confusion is retained in the design history and is not considered resolved merely by this local review.
+Fixed after the user's feedback: Pause was out of sight below the world in narrow layouts ("there are no buttons to stop"), so a sticky transport bar now sits above the world; the random-mix Storm front was "too confusing", so it is now identical stripes on both halves with a dashed storm border and an explanatory key.
+
+Found and fixed during this pass: missing avatar CSS after the stylesheet rewrite; Always Cooperate vs Win-Stay colour confusion; a "wide brush" icon that read as a selected radio; a 11 px label off the type ramp; a share bar implemented as a hard-stop gradient (flagged by Impeccable as a purple-gradient tell); the full-width grid trapping phone scrolling.
+
+Not reviewed: real devices and touch, screen readers, beginner comprehension, the user's own aesthetic judgement.

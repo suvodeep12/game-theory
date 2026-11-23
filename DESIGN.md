@@ -1,7 +1,15 @@
 ---
 name: Game Theory
-description: An approachable browser lab for inspecting cooperation and conflict
+description: A playful living world where prisoner's dilemma strategies evolve
 colors:
+  world: "#062f1e"
+  storm: "#dbe8ff"
+  strategy-cooperate: "#ffc58a"
+  strategy-defect: "#e0173f"
+  strategy-titfortat: "#3d8fff"
+  strategy-grim: "#b383f7"
+  strategy-generous: "#ffd23a"
+  strategy-wsls: "#ff6f86"
   paper: "#0b5735"
   paper-2: "#1d6a46"
   paper-3: "#08452b"
@@ -50,6 +58,7 @@ rounded:
   card: "16px"
   control: "9px"
   pill: "999px"
+  cell: "4px"
 spacing:
   xs: "8px"
   sm: "12px"
@@ -100,6 +109,18 @@ This is a scan of the implemented source, not a new direction. `PRODUCT.md` owns
 - Heavy rounded headings paired with compact, readable explanations.
 - Familiar controls and explicit, colour-independent C/D action marks.
 - Measured results, their conditions, and their limitations remain inspectable.
+
+## Evolution grid (current since 23 November 2026)
+
+The lab screens described in Layout and Components below are retired; their materials (ground, peach actions, fonts, avatars, flat surfaces) carry over. The current screen is one board and one panel.
+
+- **World.** A 48 × 48 canvas on the `world` ground with a 1px rule inset and card radius. Nice strategies are rounded cells (40% corner) with two dark eyes when cells are at least 6.5 CSS px; Always Defect is a sharp square, matching its angular avatar. Cell opacity runs from 30% (scoring 0) to 100% (scoring 3 or more), so thriving creatures look bright and struggling ones dim. Cells that changed strategy flash a pale ring that fades over 700 ms.
+- **Strategy palette.** `strategy-*` colours follow the avatar atlas. Always Cooperate is lightened to apricot and Win-Stay, Lose-Shift shifted pink so the two stay distinct as small cells. Colour is never the only cue: palette rows carry avatar and name, and the inspector names everything.
+- **Storm.** A light `storm` wash, falling streaks, and a dashed `storm` border wherever stormy cells meet calm ones. A key under the world explains it whenever any storm exists.
+- **Transport bar.** Pause/play (peach primary), Step and Restart (secondary), generation and speed sit directly above the world and stick to the top of the viewport while scrolling.
+- **Timeline.** A stacked population chart under the world; an invisible native range over it is the rewind control (focus ring on the container). An erased future draws at 22% opacity.
+- **Panel.** Paint palette rows double as the live leaderboard (a solid share bar behind each row; selected tool gets a peach ring), tool tiles (Storm, Calm, Inspect, Wide brush), scenario cards, mutation slider. The inspector is a pale `card` surface with a 12-round C/D strip; slips get a dashed outline.
+- **Motion.** Reduced motion disables autoplay, rain movement and flashes.
 
 ## Colors
 
@@ -203,4 +224,4 @@ The interface uses a short background transition (120ms, the ease-out curve) for
 - **Don't** turn historical static alternatives or unused source tokens into new visual authority.
 - **Don't** present the design scan as deployment, formal accessibility approval, physical-device validation, or beginner-comprehension evidence.
 
-Source evidence: `src/tokens.css`, `src/base.css`, `src/styles.css`, `src/App.tsx`, `src/Avatar.tsx`, `src/scores.ts`, and `index.html`, refreshed on 1 November 2026. The user found both earlier experiment/result layouts confusing, then requested recognizable avatars, distinct nice/nasty families and cumulative tournament points at N. The introduction, simulation engine, fixed rules and seeded games remain unchanged; the primary score presentation changed explicitly. The production raster atlas and provenance are tracked. The prior finish verdict covers the earlier design; the current revision has local browser and visual verification and awaits user comprehension feedback. See `docs/CONTEXT.md` and `docs/validation.md` for scope. Formal accessibility, physical-device behavior and beginner tests remain unverified.
+Source evidence (23 November 2026): `src/tokens.css`, `src/base.css`, `src/styles.css`, `src/App.tsx`, `src/Avatar.tsx` and `index.html`; the grid section above is current, and the rest of this paragraph describes the retired lab. Earlier source evidence included `src/scores.ts`, refreshed on 1 November 2026. The user found both earlier experiment/result layouts confusing, then requested recognizable avatars, distinct nice/nasty families and cumulative tournament points at N. The introduction, simulation engine, fixed rules and seeded games remain unchanged; the primary score presentation changed explicitly. The production raster atlas and provenance are tracked. The prior finish verdict covers the earlier design; the current revision has local browser and visual verification and awaits user comprehension feedback. See `docs/CONTEXT.md` and `docs/validation.md` for scope. Formal accessibility, physical-device behavior and beginner tests remain unverified.
