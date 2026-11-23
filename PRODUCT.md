@@ -1,6 +1,6 @@
 # Product
 
-Start with [the complete repository context](docs/CONTEXT.md). Later user-confirmed presentation choices are distinct avatars, nice defined as never defects first in error-free play, and primary cumulative points after N rounds across all tournament games. Exact definitions, limitations and precedence are in [score presentation](docs/score-presentation.md). The user requires context to stay in this repository; see [AGENTS.md](AGENTS.md).
+Start with [the complete repository context](docs/CONTEXT.md). Since 23 November 2026 the product is a visual evolution simulation (a living grid) that replaced the guided lab; the user chose evolution over generations, a visual sim with fewer caveats, a living grid, and replacing the lab. Nice still means never defects first in error-free play, and avatars stay distinct. The user requires context to stay in this repository; see [AGENTS.md](AGENTS.md).
 
 <!-- impeccable:product-schema 1 -->
 
@@ -10,7 +10,7 @@ web
 
 ## Stack
 
-Confirmed and implemented locally: React + TypeScript, built with Vite, with simulations running entirely in the visitor's browser and production output as static files. The user approved the technical plan and selected Hands-on Lab before implementation. See the [implementation plan](docs/implementation-plan.md) and [validation report](docs/validation.md).
+React + TypeScript, built with Vite; everything runs in the visitor's browser and ships as static files. Model: [simulation rules](docs/simulation-rules.md). Evidence: [validation](docs/validation.md).
 
 ## Users
 
@@ -18,36 +18,34 @@ People curious about cooperation and conflict, including complete beginners who 
 
 ## Product Purpose
 
-Let visitors explore repeated prisoner's dilemma tournaments, understand the behaviour behind results, and consider qualified applications in life. Cooperation winning is not a required outcome. Findings are conditional on this model and its tested settings.
+Let visitors watch six prisoner's dilemma strategies compete for one world over generations, and poke at it: paint creatures and storms of mistakes, rewind, rewrite history, and inspect any creature to see why it thrives or fails. Cooperation winning is not a required outcome; outcomes come from the model, not from authored conclusions.
 
 ## Capabilities and Constraints
 
-The [product brief](docs/product-brief.md) records the approved scope; [simulation rules](docs/simulation-rules.md) own exact model definitions. Keep those as the authorities for mechanics rather than copying numeric rules into separate design documents.
+[Simulation rules](docs/simulation-rules.md) own exact model definitions; do not copy numbers into design documents.
 
-- Skippable introduction and five guided topics; no separate sandbox.
-- Built-in strategies, inspectable encounters, reproducible links, multiple measures of success, and descriptive uncertainty.
-- Adjustable opponent proportions, error-type modes, and forgiveness. Length bounds, error bounds, and payoffs stay fixed in v1.
-- No backend, accounts, monetisation, submissions, or public competition leaderboard in v1.
-- Memory across encounters and learning/adaptation are requested for a future version, not v1 scaffolding requirements.
+- One screen: a 48 × 48 world, a population timeline that doubles as rewind, play/pause/step/restart and speed above the world, a strategy palette that doubles as the live leaderboard, storm/calm/inspect tools, four scenarios, and a mutation slider.
+- Rules version 1 encounters are unchanged; the grid adds imitate-the-best-neighbour selection and mutation.
+- No backend, accounts, monetisation, submissions or leaderboards.
+- Few caveats on the page (user request); limits live in the repository docs.
 
 ## Voice and Design Commitments
 
-Confirmed: curious and approachable, with restrained playfulness. Use both Hallmark and Impeccable for design. The user selected Hands-on Lab: forest-green Squeeze material, pale encounter stage, peach controls, Gabarito headings, and Manrope body type. The approved preview and implementation contract are recorded in [design directions](docs/design-directions.md) and [the direction contract](docs/hands-on-contract.md). "Game Theory" remains a working label, not an approved permanent brand.
+Curious, approachable and playful. Use Hallmark and Impeccable for design. Keep the Hands-on Lab materials: forest-green paper, peach controls, Gabarito headings, Manrope body, the v2 avatar atlas. Creativity is a standing user request: favour inventive interactions over default patterns, while keeping code lean. "Game Theory" remains a working label.
 
-Explain unfamiliar terms in context. Do not present cooperation/defection as moral labels. Separate findings, model explanations, possible life applications, and analogy limits.
+Do not present cooperation/defection as moral labels. Keep copy short.
 
 ## Evidence on Hand
 
-The repository contains the running application, engine/link tests, measured browser verification, and captured UI evidence. See the validation report for exact limits. Simulation findings are generated from the selected settings and seed, not authored ahead of time. There is no evidence of user adoption, testimonials, or beginner comprehension; do not invent it.
+The repository contains the running application, engine and grid tests, measured browser checks, and screenshots. See the validation report for exact limits. There is no evidence of user adoption, testimonials, or beginner comprehension; do not invent it.
 
 ## Product Principles
 
-- Make experiments understandable from zero prior knowledge.
-- Let findings challenge expectations.
-- Keep conditions and supporting evidence inspectable.
-- State uncertainty and the limits of human analogies.
-- Keep each guided topic focused and reveal technical detail progressively.
+- Show, don't lecture: the world should explain itself through motion, brightness and the inspector.
+- Every control invites an experiment.
+- Let outcomes surprise; never script a winner.
+- Keep the model inspectable for the curious.
 
 ## Accessibility and Inclusion
 
-Beginner comprehension is a confirmed goal. If volunteers are available, use the five-person comprehension check in the product brief. Concrete keyboard, screen-reader, contrast, motion, and responsive checks are proposed in the implementation plan; no audit or user test has passed yet.
+Controls are native buttons and ranges with labels; the canvas has a text summary of shares; reduced motion disables autoplay, rain and flashes. Painting needs a pointer. No audit, screen-reader test, physical-device test or beginner study has passed yet.

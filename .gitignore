@@ -8,3 +8,4 @@ dist/
 !.impeccable/surfaces/
 .env
 .env.*
+.claude/

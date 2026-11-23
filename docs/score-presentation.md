@@ -2,6 +2,8 @@
 
 Confirmed by the user on 1 November 2026. This adds a presentation view over rules version 1; it does not change the simulated games.
 
+> **Historical since 23 November 2026.** The cumulative-score lab was replaced by the evolution grid ([CONTEXT](CONTEXT.md), decision 10). The nice/nasty identity rules below still apply to the grid's avatars and cell shapes; the N-round scoreboard and its code no longer ship. Recover `src/scores.ts` and `tests/scores.test.ts` from commit `d19cc22` if needed.
+
 ## Nice and nasty
 
 The user's definition: **nice means never defects first**. The design discussion qualifies this classification to error-free play. Always Cooperate, Tit for Tat, Grim Trigger, Generous Tit for Tat and Win-Stay, Lose-Shift receive distinct rounded characters. Always Defect receives an angular berry-red character. Nice describes initiation, not forgiveness, guaranteed cooperation under errors, moral worth, or superior results. In particular, Grim Trigger retaliates permanently within an encounter after a perceived defection; Win-Stay, Lose-Shift can sustain a mistaken defection after a rewarding payoff.
@@ -28,4 +30,4 @@ Cooperation percentages, weighted means, observed ranges, paired differences, fu
 
 ## Implementation and checks
 
-[scores.ts](../src/scores.ts) computes deterministic sums using summaries plus at most one boundary replay. [Tests](../tests/scores.test.ts) cover zero, a partial self-game, the next game's partial score, final totals, both self-play roles, 2N player-rounds, and invalid cursor values. [Browser evidence](verification/avatar-scores-browser.json) verifies actual rendering against independent sums. [Current screenshots](design/current/) show the shipped local design. These checks establish arithmetic and rendering behaviour, not beginner comprehension or real-life validity.
+`src/scores.ts` (removed; see commit `d19cc22`) computed deterministic sums using summaries plus at most one boundary replay. Its tests covered zero, a partial self-game, the next game's partial score, final totals, both self-play roles, 2N player-rounds, and invalid cursor values. [Browser evidence](verification/avatar-scores-browser.json) verified actual rendering against independent sums. [Lab screenshots](design/history/lab-scores-desktop.png) show that design. These checks establish arithmetic and rendering behaviour, not beginner comprehension or real-life validity.

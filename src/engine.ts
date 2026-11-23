@@ -90,8 +90,9 @@ export function encounter(seed: string, repetition: number, pair: number, condit
   return { summary, trace: played.trace };
 }
 export const mean = (values: number[]) => values.reduce((sum, x) => sum + x, 0) / values.length;
-export function aggregate(encounters: Encounter[], weights: number[]): Repetition {
-  const w = normalized(weights), matrix = IDS.map(() => Array<number>(6).fill(0)), cooperation = IDS.map(() => Array<number>(6).fill(0));
+// Per-round points and cooperation of row strategy against column strategy, from one repetition's 21 encounters.
+export function pairMatrix(encounters: Encounter[]) {
+  const matrix = IDS.map(() => Array<number>(6).fill(0)), cooperation = IDS.map(() => Array<number>(6).fill(0));
   for (const e of encounters) {
     const [a, b] = PAIRS[e.pair];
     if (a === b) {
@@ -102,6 +103,10 @@ export function aggregate(encounters: Encounter[], weights: number[]): Repetitio
       cooperation[a][b] = e.cooperation[0] / e.rounds; cooperation[b][a] = e.cooperation[1] / e.rounds;
     }
   }
+  return { matrix, cooperation };
+}
+export function aggregate(encounters: Encounter[], weights: number[]): Repetition {
+  const w = normalized(weights), { matrix, cooperation } = pairMatrix(encounters);
   const scores = matrix.map(row => row.reduce((sum, x, j) => sum + x * w[j], 0));
   return { scores, collective: scores.reduce((sum, x, i) => sum + x * w[i], 0), cooperation: cooperation.reduce((sum, row, i) => sum + w[i] * row.reduce((s, x, j) => s + x * w[j], 0), 0), gap: Math.max(...scores) - Math.min(...scores) };
 }

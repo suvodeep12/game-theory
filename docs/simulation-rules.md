@@ -124,3 +124,23 @@ For comparisons, report paired differences between repetitions alongside their v
 Always distinguish success against a particular opponent, tournament score, collective benefit, and robustness across tested conditions. No one measure establishes a universal best strategy.
 
 [Axelrod (1980)](https://esp.mit.edu/download/2dd80247-be60-4e73-b49d-91b5b6988ff0/S12850_axelrod_1980.pdf) supplies historical context for repeated-game tournaments. [Glynatsi, Knight and Harper](https://arxiv.org/abs/2001.05911) investigate performance across many strategies and settings. These sources motivate conditional reporting; they do not establish results for this app's selected rules.
+
+## Evolution grid — agreed 23 November 2026
+
+The user replaced the guided lab with a living grid (see [CONTEXT](CONTEXT.md), decisions 9–12). The grid is a layer **on top of** rules version 1: encounters, strategies, payoffs, durations and error sampling above are unchanged. Source: [evolution.ts](../src/evolution.ts), tests: [evolution.test.ts](../tests/evolution.test.ts).
+
+**Payoff tables.** For seed `curiosity`, run 20 repetitions of the 21 v1 encounters and average each strategy's points per round against each opponent (`pairMatrix`, the same per-round normalization as `aggregate`). This is done twice: *calm* uses error mode `none`; *storm* uses error mode `both` (action and observation rates each sampled 0–10% per encounter). Forgiveness is fixed at 10%. Calm tables are exact apart from duration averaging; storm tables are sample means.
+
+**World.** 48 × 48 cells on a torus (edges wrap). Each cell holds one strategy and a weather flag (calm or storm). Neighbourhood: the eight surrounding cells.
+
+**Score.** A cell's score is the mean, over its eight neighbours, of its table entry against that neighbour's strategy. A pair uses the storm table if either cell is stormy. A creature does not play itself.
+
+**Update (synchronous).** Every cell adopts the strategy of the highest-scoring cell among itself and its neighbours. The cell itself wins ties; ties among better neighbours are broken uniformly at random. Then, with probability *mutation* (default 0.1%, range 0–2%), the cell becomes a uniformly random strategy. Weather never changes by itself. Randomness uses the v1 `randomStream` keyed by world seed and generation, so replaying from a stored generation reproduces the same future unless the world is edited.
+
+**Scenarios.** *Even mix* draws each cell uniformly. *One bad apple*: all Always Cooperate, one Always Defect in the centre, a 3 × 3 Tit for Tat team near a corner. *Last stand*: all Always Defect with a 2 × 2 Tit for Tat team in the centre. *Storm front*: four equal horizontal stripes (Tit for Tat, Grim Trigger, Generous Tit for Tat, Win-Stay, Lose-Shift, top to bottom) across the whole world, with the eastern half stormy, so weather is the only difference between halves. (Until the user called it too confusing on 23 November it was a random mix with a stormy east.)
+
+**History.** Every generation is stored (up to 1,000). Rewinding shows stored generations; painting at an earlier generation discards the later ones and keeps their population counts as a faded "erased future" in the chart.
+
+**Inspector.** Shows the cell's score, its best-scoring neighbour, the predicted next strategy (ignoring random tie-breaks and mutation), and an illustrative 12-round v1 encounter against that neighbour (storm pairs use 5% action and observation error, the mean of the sampled range). The 12-round strip illustrates behaviour; the grid itself uses the averaged tables.
+
+**Observed with mutation off** (`curiosity` tables): a single defector converts a trusting world one ring per generation, then Tit for Tat sweeps the defectors back (whole grid by about generation 60); four Tit for Tats retake a defector world in about 30 generations; in calm weather the nice strategies tie at 3 points and the world freezes; in the striped *Storm front* the calm stripes stay put while, in the storm, Grim Trigger collapses first (288 → 62 cells by generation 5), Tit for Tat next (gone by about generation 20), then Generous, and Win-Stay, Lose-Shift ends with about 1,110 of the 1,152 stormy cells. These describe this model and these settings only.

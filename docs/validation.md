@@ -1,8 +1,20 @@
-# Local v1 validation
+# Local validation
 
-1 November 2026. This report describes the current local build, not a public release or a validated model of human behaviour.
+Updated 23 November 2026. This report describes local builds, not a public release or a validated model of human behaviour. The newest section is current; everything below it describes the retired guided lab.
 
-## Latest revision: avatars, cumulative scores and durable context
+## Current: evolution grid (23 November 2026)
+
+**Automated.** `npm test`: 15 pass (9 unchanged v1 engine tests, 6 grid tests). `npm run build`: type check and production build pass (JS 235 kB, 75 kB gzipped). Node v22.23.1. Payoff tables take about 140 ms to compute once at load; one 48 × 48 generation takes about 0.2 ms (Node, this machine).
+
+**Scenario stories** (Node, mutation off, seed `curiosity`): *One bad apple*: defectors reach 873 of 2,304 cells by generation 15, then Tit for Tat holds all 2,304 by generation 60. *Last stand*: 4 → 2,304 Tit for Tat by generation 30. *Even mix*: freezes by generation 15 with Always Defect extinct and the five nice strategies tied. *Storm front* (striped, current): the calm west keeps 288 cells of each stripe; in the stormy east Grim falls to 62 by generation 5, Tit for Tat to 1 by generation 20, Generous to 24, and Win-Stay, Lose-Shift reaches 1,110 of 1,152. (The first, random-mix version gave Win-Stay 1,333 cells overall; the user found it too confusing.)
+
+**Browser** (desktop app's Chromium pane, dev server): autoplay ran with no console errors at 1440 × 1000. In the default run, Always Defect was extinct by generation 100. Rewinding to generation 20 showed the stored world (defectors 70%), and painting there produced "faded: the future you erased" with the ghost drawn in the timeline. The first *Storm front* gave Win-Stay, Lose-Shift 56% of the world; the striped redesign showed intact west stripes and Win-Stay at 59% overall by generation 51, with the dashed storm border and storm key visible. After the user reported no visible stop control, the transport bar moved above the world: clicking Pause held the world at generation 12 for 2 s, the button switched to Play, and the bar stayed pinned at the viewport top (0 px) after scrolling; at 375 px it wraps to two rows without overflow. The inspector showed rule, score, best neighbour, a 12-round duel with slips marked, and the next-generation prediction. At 375 px: no horizontal overflow, 344 px world with visible eyes.
+
+**Impeccable detector.** Source scan: 0 anti-patterns (advisories: new strategy colours and small cell radii, now documented in DESIGN.md). Running-page scan: one finding (share bar drawn as a hard-stop purple gradient), fixed by drawing a solid bar; rescan clean (exit 0).
+
+**Not verified.** Touch tap-vs-swipe behaviour on a real device; Safari/Firefox; screen readers (the canvas exposes a text summary of shares only); keyboard-only painting (painting needs a pointer; play/step/scenarios/rewind are keyboard-reachable); performance on low-end phones; beginner comprehension; independent design review.
+
+## Lab revision: avatars, cumulative scores and durable context
 
 The user selected nice = never defects first (classified in error-free play), distinct nice/nasty avatar families, and primary cumulative points after N rounds across the whole tournament. N counts rounds across all games. The new scoreboard shows six identities with raw points and rounds played, and an exact global cursor over the completed tournament. Encounter totals remain separate. The original weighted averages and cooperation values remain inspectable. This supersedes the cooperation-first result hierarchy described in the earlier revision below.
 
