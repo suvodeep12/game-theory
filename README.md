@@ -1,5 +1,7 @@
 # Who inherits the world?
 
+**Live:** <https://suvodeep12.github.io/game-theory/>
+
 A living prisoner's dilemma world in the browser. Six strategies share a 48 × 48 grid; every generation each creature plays its eight neighbours and copies whoever nearby scored best. Paint in defectors or storms of mistakes, rewind, and rewrite history. "Game Theory" is a working name.
 
 **Project handoff:** start with [the context index](docs/CONTEXT.md). It records requirements, decisions, design history, validation, open questions and next steps. [AGENTS.md](AGENTS.md) requires contributors to keep that context in this repository. `npm run check:context` checks local Markdown links (not completeness).

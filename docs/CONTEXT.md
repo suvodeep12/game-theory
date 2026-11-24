@@ -44,6 +44,7 @@ A playful, visual evolution simulation for everyone, including people unfamiliar
 12. The user asked that work always be **as creative and innovative as possible**. Additions chosen under that brief (proposals the user has not yet reviewed): storm weather you can paint, rewind with a faded "erased future" when you rewrite history, conversion flashes on invasion fronts, brightness showing how well each creature is doing, a palette that doubles as the live leaderboard, an inspector with a 12-round duel strip that marks slips, and four story scenarios.
 13. While reviewing the first build, the user reported **"there are no buttons to stop"**: Pause sat in the side panel, below the fold in a single-column layout. Fix: a sticky transport bar (Pause/Play, Step, Restart, generation, speed) directly above the world, matching the ASCII preview they picked.
 14. The user found the first **Storm front** (random mix, stormy east) **too confusing**. Fix: a controlled experiment with identical stripes of four nice strategies on both halves, a dashed border around every storm area, stronger rain, a lighter wash, and a key under the world whenever storm exists.
+15. **24 Nov 2026:** the user asked to host the project and chose **GitHub Pages** (public) over a private claude.ai link. [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) runs the tests, builds with base `/game-theory/` and deploys on every push to `main`. Site: <https://suvodeep12.github.io/game-theory/>.
 
 ## Current implementation
 
@@ -53,10 +54,10 @@ One page: headline, a one-paragraph explanation and a collapsed "How it works". 
 
 15 Node tests and the production type-check/build pass. Interactive browser checks covered autoplay, scenario stories, rewind, painting into the past (ghost timeline), the storm scenario, the inspector, and 375 px phone width with no horizontal overflow. Impeccable's detector reports no anti-patterns on the running page. Details: [validation](validation.md).
 
-Not established: physical-device or real touch testing (touch tap-vs-swipe logic is untested), Safari/Firefox, screen-reader use of the canvas (it has a text summary only), formal accessibility, beginner comprehension, independent design review, or the user's aesthetic approval of the new screen. The grid's outcomes describe this model only. History is capped at 1,000 generations (playback pauses there). There is no public web host.
+Not established: physical-device or real touch testing (touch tap-vs-swipe logic is untested), Safari/Firefox, screen-reader use of the canvas (it has a text summary only), formal accessibility, beginner comprehension, independent design review, or the user's aesthetic approval of the new screen. The grid's outcomes describe this model only. History is capped at 1,000 generations (playback pauses there). Public host: GitHub Pages (decision 15).
 
 ## Next work
 
 - Get the user's reaction to the grid and to the creative additions in decision 12; keep, cut or extend accordingly.
 - Possible next ideas (not agreed): shareable world links, a "challenge" mode (e.g. conquer the world with five placements), sound, a tracked headless browser check for the grid.
-- Select public website hosting only when requested. Keep context and evidence current in every subsequent change.
+- Keep context and evidence current in every subsequent change. A push to `main` publishes to the live site.

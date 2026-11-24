@@ -29,4 +29,4 @@ Keep Impeccable's design hooks installed and enabled. During UI work, verify int
 
 ## Verification and publication
 
-Run `npm test` and `npm run build` for simulation or interface changes. Verify the actual browser path for meaningful UI changes, with desktop and phone evidence. State physical-device and comprehension limits honestly. Use Conventional Commit messages. The user authorized the public repository at `https://github.com/suvodeep12/game-theory`; public website hosting is a separate unresolved decision.
+Run `npm test` and `npm run build` for simulation or interface changes. Verify the actual browser path for meaningful UI changes, with desktop and phone evidence. State physical-device and comprehension limits honestly. Use Conventional Commit messages. The user authorized the public repository at `https://github.com/suvodeep12/game-theory`; the user chose GitHub Pages for public hosting, so every push to `main` deploys to https://suvodeep12.github.io/game-theory/.

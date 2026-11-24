@@ -71,7 +71,7 @@ The revision passed all 12 model/link tests, type checking, production build, an
 
 ### Remaining limits
 
-- No public host, domain, or deployment has been selected or published. Local links work only where this app is reachable; an Internet-accessible origin is needed to share with other people.
+- Hosted on GitHub Pages at <https://suvodeep12.github.io/game-theory/> (no custom domain). Each push to `main` re-runs the tests and redeploys.
 - No Safari, Firefox, physical Android/iOS device, assistive-technology audit, or formal WCAG conformance claim.
 - No five-beginner comprehension test: volunteers have not been available in this session.
 - No phone performance benchmark, cross-version legacy execution, service worker, or offline-install promise.
