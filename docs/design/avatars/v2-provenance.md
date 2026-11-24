@@ -1,6 +1,6 @@
 # Production strategy avatars — v2
 
-Created 1 November 2026 with the built-in `image_gen.imagegen` tool, editing the [first cast sheet](cast-v1.png), then applying one correction pass. The production asset is [strategies-v2.png](../../../public/avatars/strategies-v2.png), 1536 × 1024 RGBA. This is the first avatar asset integrated into the app. The earlier cast sheet remains historical context, not the current visual authority.
+Created 1 November 2026 with the built-in `image_gen.imagegen` tool, editing the [first cast sheet](cast-v1.png), then applying one correction pass. The production asset was `public/avatars/strategies-v2.png`, 1536 × 1024 RGBA (removed on 24 November 2026 when the Tabletop pieces replaced it; recover it with `git show f6dabec:public/avatars/strategies-v2.png`). It was the first avatar asset integrated into the app. The earlier cast sheet remains historical context, not the current visual authority.
 
 The user required nice/nasty visual families and defined nice as never defects first. Five rounded characters represent error-free nice rules; the top-middle angular berry-red character represents Always Defect. The old sharp Win-Stay, Lose-Shift zigzag became a rounded asymmetric double-lobe shape. The formal classification and score semantics are in [score presentation](../../score-presentation.md).
 

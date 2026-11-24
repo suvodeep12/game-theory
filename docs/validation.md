@@ -1,8 +1,25 @@
 # Local validation
 
-Updated 23 November 2026. This report describes local builds, not a public release or a validated model of human behaviour. The newest section is current; everything below it describes the retired guided lab.
+Updated 24 November 2026. This report describes local builds, not a validated model of human behaviour. The newest section is current; sections below it describe earlier interfaces (the model checks in them still hold).
 
-## Current: evolution grid (23 November 2026)
+## Current: Tabletop redesign (24 November 2026)
+
+**Automated.** `npm test`: 17 pass (adds share labels: a present kind never reads 0%, a kind that is not alone never reads 100%). `npm run build`: type check and production build pass (JS 253 kB, 80 kB gzipped; CSS 19 kB; Lilita One and Rethink Sans font files bundled, Latin only).
+
+**Browser** (desktop app's Chromium pane, `npm run dev`, storage cleared first):
+- No failed requests; Lilita One 400 and Rethink Sans 500/700/800 loaded.
+- Opening → *Read the rules* → all five cards (the C/D try-it rings the matching payoff cell and shows the result; ←/→ flip cards; pips jump) → *Start with One bad apple* → board. The title changes per screen, focus moves to the new screen, `gt-seen-rules` is set; reloading the bare URL then opens `#board`; the browser Back button returns to the rules.
+- Board at 1440 × 900 and 1024 × 768: the whole board is visible without scrolling, and the header lines up with the content.
+- Space paused play; Inspect plus a tap opened the piece card (the all-C calm case shows its explanation); Escape closed it. In *Storm front* the dashed border, tint and storm key showed, and a stormy duel marked its slip with a dashed outline.
+- Rewinding to turn 8 of 23 showed "Rewound to turn 8 of 23: paint to rewrite history."; painting there switched the note to "Faded: the future you erased." with the old future faded on the track.
+- *Last stand* with mutation 0 at 20 turns/s: Tit for Tat reached 100% by turn 30 and the banner "Tit for Tat holds every square." appeared with *Paint some defectors* and *Try Storm front*. Run on to turn 1,000: "The score track is full." replaced it, Play and Next turn were disabled, and the axis read 0 / 500 / 1000.
+- 375 × 812 (mobile emulation): opening, rules (header and navigation on one row each), board (icon-only transport keeping accessible names, six-across tray, 328 px board), and the piece card as a bottom sheet over a backdrop. 320 × 640: no horizontal overflow on any screen.
+
+**Fixed during these checks.** A stray space in "Next : …"; card 4's two neighbourhoods drawn at different sizes; banners hidden below the fold at 1440 × 900 (moved to the top of the board, and the board sized to the window height); the phone header and rules navigation wrapping onto extra rows.
+
+**Not verified.** Reduced-motion behaviour by emulation (checked by reading the code: no autoplay, no card deal, no flashes, still rain, and the *Press Play when you're ready* banner); Safari and Firefox; real touch devices; screen readers; beginner comprehension; independent design review; the user's reaction to the built page.
+
+## Evolution grid, forest-green interface (23 November 2026)
 
 **Automated.** `npm test`: 15 pass (9 unchanged v1 engine tests, 6 grid tests). `npm run build`: type check and production build pass (JS 235 kB, 75 kB gzipped). Node v22.23.1. Payoff tables take about 140 ms to compute once at load; one 48 × 48 generation takes about 0.2 ms (Node, this machine).
 

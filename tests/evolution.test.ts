@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { census, neighbours, payoffs, scenario, scores, step, toughest } from '../src/evolution.ts';
+import { census, neighbours, payoffs, scenario, scores, share, step, toughest } from '../src/evolution.ts';
 import type { Payoffs, World } from '../src/evolution.ts';
 
 const m = payoffs('curiosity', 5);
@@ -46,4 +46,7 @@ test('inspector duel: toughest neighbour is the one a cell earns least against, 
   assert.equal(toughest(w, m, scores(w, m), 0), 1); // cooperator next to a defector duels the defector
   const v = world(4, 0, [[10, 1]]), s = scores(v, m);
   assert.equal(s[toughest(v, m, s, 0)], 3); // all-cooperator neighbours tie, so it picks one untouched by the defector
+});
+test('share labels never hide a present kind or claim a whole board that is not whole', () => {
+  assert.deepEqual([0, 1, 11, 12, 1152, 2292, 2303, 2304].map(n => share(n, 2304)), ['0%', '<1%', '<1%', '1%', '50%', '99%', '>99%', '100%']);
 });

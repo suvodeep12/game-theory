@@ -14,7 +14,7 @@ The user said the entire working app was extremely confusing, then identified th
 
 ## Player identities and cumulative points
 
-The user proposed avatars tied to specific strategies and required distinct, instantly recognizable identities. [Cast concept 1](avatars/cast-v1.png) gave six different silhouettes. The user then required nice strategies to look distinctly different from nasty strategies, defining nice as “never defects first.” Five rounded identities and an angular Always Defect identity were generated as the [production atlas](../../public/avatars/strategies-v2.png).
+The user proposed avatars tied to specific strategies and required distinct, instantly recognizable identities. [Cast concept 1](avatars/cast-v1.png) gave six different silhouettes. The user then required nice strategies to look distinctly different from nasty strategies, defining nice as “never defects first.” Five rounded identities and an angular Always Defect identity were generated as the production atlas, `public/avatars/strategies-v2.png` (retired 24 November 2026 for the drawn Tabletop pieces; recoverable from commit `f6dabec`).
 
 The user requested visible points on the actual screen and identified the primary stat as score after N rounds. Two clarifications resolved the meaning: **whole tournament**, then **N rounds across all games**. The implementation now leads with six avatars, raw cumulative scores and a global round cursor. The original normalized/weighted measures remain expandable. Score units, self-play counting and the fixed-schedule mix limitation are explicit in [score presentation](../score-presentation.md).
 

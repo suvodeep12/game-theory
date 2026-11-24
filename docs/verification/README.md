@@ -2,9 +2,9 @@
 
 ## Current: evolution grid (23 November 2026)
 
-`npm test` runs 16 tests: the 9 unchanged rules-version-1 engine tests and 7 grid tests (inspector duel opponent, payoff tables from v1 encounters, wrap-around neighbours, calm/storm scoring, one-ring defector spread and tie retention, Tit for Tat invasion of a defector world, reproducible steps and mutation). `npm run build` type-checks and builds. Both require only the pinned project dependencies.
+`npm test` runs 17 tests: the 9 unchanged rules-version-1 engine tests and 8 grid tests (share labels, inspector duel opponent, payoff tables from v1 encounters, wrap-around neighbours, calm/storm scoring, one-ring defector spread and tie retention, Tit for Tat invasion of a defector world, reproducible steps and mutation). `npm run build` type-checks and builds. Both require only the pinned project dependencies.
 
-Browser checks were run interactively in the Claude desktop app's browser pane against `npm run dev`, plus Impeccable's detector against the running page. The measured results are recorded in [validation](../validation.md). There is no tracked headless browser script for the grid yet; the screenshots in [current](../design/current/) were captured by hand (desktop with headless Edge at generation 0, phone from the browser pane at 375 px).
+Browser checks were run interactively in the Claude desktop app's browser pane against `npm run dev`. The measured results are recorded in [validation](../validation.md). There is no tracked headless browser script yet; the screenshots in [current](../design/current/) were captured by hand from the browser pane (desktop 1024 and 1440 px wide, phone 375 px). Screenshots of the previous forest-green grid are in [history/evolution-grid](../design/history/evolution-grid/).
 
 ## Historical: guided lab (1 November 2026)
 

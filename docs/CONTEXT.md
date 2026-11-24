@@ -12,11 +12,11 @@ A playful, visual evolution simulation for everyone, including people unfamiliar
 | --- | --- |
 | Encounter model (v1): strategies, payoffs, durations, errors, randomness | [Simulation rules](simulation-rules.md), [engine](../src/engine.ts) |
 | Evolution grid: payoff tables, neighbourhood, update rule, scenarios, history | [Simulation rules → Evolution grid](simulation-rules.md#evolution-grid--agreed-23-november-2026), [evolution.ts](../src/evolution.ts) |
-| Interface | [App.tsx](../src/App.tsx), [styles.css](../src/styles.css) |
-| Design system | [DESIGN.md](../DESIGN.md) (strategy palette added 23 Nov) |
-| Avatar identities, nice/nasty definition | [Score presentation](score-presentation.md) (identity section still current), [avatar notes](design/avatars/README.md), [v2 provenance](design/avatars/v2-provenance.md) |
+| Interface | [App.tsx](../src/App.tsx) (board, routing), [Story.tsx](../src/Story.tsx) (opening, rules deck), [Pieces.tsx](../src/Pieces.tsx), [styles.css](../src/styles.css) |
+| Design system | [DESIGN.md](../DESIGN.md) (Tabletop, 24 Nov); design canvas: <https://claude.ai/artifact/JirY1sph2tn7JN3XnXB9g6> |
+| Piece identities, nice/nasty definition | [DESIGN.md → The pieces](../DESIGN.md#the-pieces); earlier avatar atlases (retired 24 Nov): [avatar notes](design/avatars/README.md), [v2 provenance](design/avatars/v2-provenance.md) |
 | Verified checks and remaining limits | [Validation](validation.md), [verification notes](verification/README.md) |
-| Current rendered evidence | [Desktop](design/current/evolution-desktop.png), [phone](design/current/evolution-phone.jpg), [review](design/current/REVIEW.md) |
+| Current rendered evidence | [Opening](design/current/tabletop-opening-desktop.jpg), [board](design/current/tabletop-board-desktop.jpg), [phone rules](design/current/tabletop-rules-phone.jpg), [phone piece card](design/current/tabletop-piece-card-phone.jpg); previous grid: [history](design/history/evolution-grid/) |
 | Design and feedback history | [Revision history](design/HISTORY.md), [design directions](design-directions.md) |
 | Historical lab scope (superseded 23 Nov) | [Product brief](product-brief.md), [guided experiments](guided-experiments.md), [acceptance criteria](acceptance-criteria.md), [implementation plan](implementation-plan.md), [surface contract](hands-on-contract.md), [lab review](design/history/lab-review.md) |
 | Contributor instructions and context maintenance | [AGENTS.md](../AGENTS.md) |
@@ -26,7 +26,7 @@ A playful, visual evolution simulation for everyone, including people unfamiliar
 - React + TypeScript; everything runs in the visitor's browser. Vite builds static files; no backend, accounts, analytics, or uploads.
 - Rules version 1 is unchanged: six fixed strategies; payoffs CC 3/3, CD 0/5, DC 5/0, DD 1/1; durations 200–500; action and observation error rates sampled 0–10% per encounter; seeded event-separated random streams. Strategy state resets between encounters.
 - The grid adds selection between encounters (imitate the best neighbour) and mutation. It does not add memory of opponents or learning inside a strategy; those remain future ideas.
-- Nice means never defects first in error-free play; avatars must stay distinct. On the grid, nice strategies are rounded creatures with eyes and Always Defect is a sharp square.
+- Nice means never defects first in error-free play; the pieces must stay distinct. Nice pieces have round heads (circles on the board); Always Defect is the spike (a square on the board).
 
 ## User feedback and decisions
 
@@ -46,19 +46,20 @@ A playful, visual evolution simulation for everyone, including people unfamiliar
 14. The user found the first **Storm front** (random mix, stormy east) **too confusing**. Fix: a controlled experiment with identical stripes of four nice strategies on both halves, a dashed border around every storm area, stronger rain, a lighter wash, and a key under the world whenever storm exists.
 15. **24 Nov 2026:** the user asked to host the project and chose **GitHub Pages** (public) over a private claude.ai link. [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) runs the tests, builds with base `/game-theory/` and deploys on every push to `main`. Site: <https://suvodeep12.github.io/game-theory/>.
 16. **24 Nov 2026:** the user reported the inspector's 12-round strip was all C "for everyone". Cause: it duelled the best-scoring neighbour, almost always a nice strategy, and nice vs nice in calm weather never defects. Fix: the strip now duels the *toughest* neighbour (the one the creature earns least against in the averaged tables, ties going to the higher scorer), and an all-C calm duel gets a line explaining why.
+17. **24 Nov 2026:** the user asked to "design the UI of the page from scratch", every detail excellent, with liberty to decide, then said to use Claude Design. Asked first, they chose: **everything new** (creatures too), **story first**, **three rough directions first**, **no new features**. From the canvas's three directions (*Night Culture*, *Tabletop*, *Pictogram*) they chose **Tabletop**, approved the polished canvas, and said "Build it". Decisions taken under that liberty and shown on the canvas before the build: *turn* replaces *generation* and *Reset* replaces *Restart* in the interface; two new banners (one kind holds every square; the score track is full at turn 1,000); returning visitors skip the story on that device. The Hands-on Lab materials (forest green, peach, Gabarito/Manrope, avatar atlas) are retired. Canvas: <https://claude.ai/artifact/JirY1sph2tn7JN3XnXB9g6>.
 
 ## Current implementation
 
-One page: headline, a one-paragraph explanation and a collapsed "How it works". The 48 × 48 world autoplays the *One bad apple* scenario (unless reduced motion is requested). A sticky bar above the world holds Pause/Play, Step, Restart, the generation and speed (1–20 generations/s). The panel holds a paint palette of six strategies (each row shows its live share) plus Storm, Calm, Inspect and a wide brush, four scenarios, and a mutation slider (0–2%, default 0.1%). Under the grid, a stacked population timeline doubles as a rewind control. Keyboard: Space plays/pauses, → steps. On touch screens a tap paints and a swipe scrolls; mouse and pen can drag-paint.
+Three screens in one page, addressed by URL hash so the browser's Back button works: the **opening** (no hash), the **rules** (`#rules`, five cards: the choice with a try-it, the six pieces, neighbours, copy the best, your powers; ←/→ flip) and the **board** (`#board`). A first visit starts on the opening; once the board has been seen, that device opens straight on the board (localStorage `gt-seen-rules`). The board autoplays *One bad apple* when first shown (unless reduced motion is requested). Above it: Play/Pause, Next turn, Reset, the turn and speed (1–20 turns/s). Beside it: the piece card (when inspecting), the tray of six pieces with live shares and a *Leading* badge, Storm/Calm/Inspect/Big brush, four setup cards, and mutation (0–2%, default 0.1%). Under it: the score track, which doubles as rewind. Banners cover one kind holding every square, the full score track at turn 1,000, and a paused first turn. Keyboard: Space plays/pauses, → steps, Escape closes the piece card. On touch screens a tap paints and a swipe scrolls; mouse and pen can drag-paint. Phones get icon-only transport buttons, a six-across tray and a bottom-sheet piece card.
 
 ## Verification and limitations
 
-16 Node tests and the production type-check/build pass. Interactive browser checks covered autoplay, scenario stories, rewind, painting into the past (ghost timeline), the storm scenario, the inspector, and 375 px phone width with no horizontal overflow. Impeccable's detector reports no anti-patterns on the running page. Details: [validation](validation.md).
+17 Node tests and the production type-check/build pass. Browser checks of the Tabletop build covered every screen and board state at 1440 × 900, 1024 × 768, 375 × 812 and 320 × 640 with no horizontal overflow. Details: [validation](validation.md).
 
-Not established: physical-device or real touch testing (touch tap-vs-swipe logic is untested), Safari/Firefox, screen-reader use of the canvas (it has a text summary only), formal accessibility, beginner comprehension, independent design review, or the user's aesthetic approval of the new screen. The grid's outcomes describe this model only. History is capped at 1,000 generations (playback pauses there). Public host: GitHub Pages (decision 15).
+Not established: physical-device or real touch testing (touch tap-vs-swipe logic is untested), Safari/Firefox, screen-reader use of the canvas (it has a text summary only), formal accessibility, beginner comprehension, independent design review, or the user's reaction to the built Tabletop page (they approved the canvas, not yet the build). Reduced motion was checked by reading the code, not by emulation. The grid's outcomes describe this model only. History is capped at 1,000 generations (playback pauses there). Public host: GitHub Pages (decision 15).
 
 ## Next work
 
-- Get the user's reaction to the grid and to the creative additions in decision 12; keep, cut or extend accordingly.
+- Get the user's reaction to the built Tabletop page and to the decisions listed in decision 17; keep, cut or extend accordingly.
 - Possible next ideas (not agreed): shareable world links, a "challenge" mode (e.g. conquer the world with five placements), sound, a tracked headless browser check for the grid.
 - Keep context and evidence current in every subsequent change. A push to `main` publishes to the live site.

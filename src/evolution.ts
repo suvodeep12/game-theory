@@ -76,6 +76,9 @@ export function step(world: World, m: Payoffs, mutation: number, key: string): W
 }
 
 export const census = (cells: Uint8Array) => cells.reduce((c, s) => (c[s]++, c), [0, 0, 0, 0, 0, 0]);
+// A kind that is present never reads 0%, and one that is not alone never reads 100%.
+export const share = (n: number, total: number) =>
+  n === 0 ? '0%' : n === total ? '100%' : n / total < .005 ? '<1%' : n / total > .995 ? '>99%' : `${Math.round(n / total * 100)}%`;
 
 export const SCENARIOS = {
   mix: { name: 'Even mix', hook: 'All six, scattered at random.' },

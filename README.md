@@ -14,7 +14,7 @@ Node 22.12+ on the Node 22 line (verified with 22.23.1). `npm ci`, then `npm run
 
 - [Simulation rules](docs/simulation-rules.md): the unchanged rules-version-1 encounters (strategies, payoffs, durations, mistakes) and the evolution grid built on them.
 - [`src/engine.ts`](src/engine.ts): seeded v1 encounters. [`src/evolution.ts`](src/evolution.ts): payoff tables, grid step, scenarios. [`src/App.tsx`](src/App.tsx): canvas world, timeline, palette, inspector.
-- [DESIGN.md](DESIGN.md): the forest-green design system and strategy palette. Avatars: [provenance](docs/design/avatars/v2-provenance.md). Nice means never defects first; five rounded creatures, one sharp Always Defect.
+- [DESIGN.md](DESIGN.md): the Tabletop design system (cobalt box lid, white cards, six drawn game pieces) and the [Claude Design canvas](https://claude.ai/artifact/JirY1sph2tn7JN3XnXB9g6) it came from. Nice means never defects first: five round-headed pieces, one spiky Always Defect. [`src/Story.tsx`](src/Story.tsx): opening and rules deck. [`src/Pieces.tsx`](src/Pieces.tsx): the pieces.
 - [Validation](docs/validation.md): what was actually checked and what was not.
 
 The guided lab that came before (five topics, cumulative scoreboard) is recorded in the [design history](docs/design/HISTORY.md) and recoverable from commit `d19cc22`.

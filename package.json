@@ -11,6 +11,8 @@
     "check:context": "node scripts/check-context.mjs"
   },
   "dependencies": {
+    "@fontsource/lilita-one": "5.3.0",
+    "@fontsource/rethink-sans": "5.3.0",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
