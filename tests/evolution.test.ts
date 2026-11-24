@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { census, neighbours, payoffs, scenario, scores, step } from '../src/evolution.ts';
+import { census, neighbours, payoffs, scenario, scores, step, toughest } from '../src/evolution.ts';
 import type { Payoffs, World } from '../src/evolution.ts';
 
 const m = payoffs('curiosity', 5);
@@ -40,4 +40,10 @@ test('steps are reproducible from the same key, and mutation only acts when enab
   const start = scenario('mix', 's', 12);
   assert.deepEqual(step(start, m, .5, 'a').cells, step(start, m, .5, 'a').cells);
   assert.notDeepEqual(step(start, m, .5, 'a').cells, step(start, m, 0, 'a').cells);
+});
+test('inspector duel: toughest neighbour is the one a cell earns least against, ties go to the higher scorer', () => {
+  const w = world(4, 0, [[1, 1]]);
+  assert.equal(toughest(w, m, scores(w, m), 0), 1); // cooperator next to a defector duels the defector
+  const v = world(4, 0, [[10, 1]]), s = scores(v, m);
+  assert.equal(s[toughest(v, m, s, 0)], 3); // all-cooperator neighbours tie, so it picks one untouched by the defector
 });

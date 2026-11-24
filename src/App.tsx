@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import type { CSSProperties, PointerEvent, ReactNode } from 'react';
 import { IDS, NAMES, RULES, play } from './engine.ts';
-import { SIZE, SCENARIOS, census, neighbours, payoffs, scenario, scores, step } from './evolution.ts';
+import { SIZE, SCENARIOS, census, neighbours, payoffs, scenario, scores, step, toughest } from './evolution.ts';
 import type { Scenario, World } from './evolution.ts';
 import { Avatar } from './Avatar.tsx';
 
@@ -83,15 +83,18 @@ function drawRiver(ctx: CanvasRenderingContext2D, w: number, h: number, counts: 
 function Inspector({ i, w, score, onClose }: { i: number; w: World; score: Float64Array; onClose: () => void }) {
   const near = Array.from(neighbours(SIZE).subarray(i * 8, i * 8 + 8));
   const rival = near.reduce((a, b) => (score[b] > score[a] ? b : a));
-  const s = w.cells[i], o = w.cells[rival], stormy = !!(w.storm[i] || w.storm[rival]);
+  const foe = toughest(w, M, score, i);
+  const s = w.cells[i], o = w.cells[rival], f = w.cells[foe], stormy = !!(w.storm[i] || w.storm[foe]);
   const next = score[rival] > score[i] + 1e-9 ? o : s;
-  const trace = play(IDS[s], IDS[o], 12, `look|${i}|${rival}`, stormy ? STORM : [0, 0], .1, true).trace;
+  const trace = play(IDS[s], IDS[f], 12, `look|${i}|${foe}`, stormy ? STORM : [0, 0], .1, true).trace;
   const row = (p: 0 | 1) => trace.map((r, k) => <i key={k} className={`${r.actual[p] ? 'd' : ''}${r.actual[p] !== r.intended[p] ? ' slip' : ''}`}>{r.actual[p] ? 'D' : 'C'}</i>);
   return <section className="inspector" aria-live="polite">
     <header><Avatar strategy={s} /><div><h2>{NAMES[s]}</h2><p>{RULES[s]}</p></div><button className="close" onClick={onClose} aria-label="Close inspector">×</button></header>
     <p><strong className="num">{score[i].toFixed(2)}</strong> points a round, {stormy ? 'in the storm' : 'in calm weather'}. Best neighbour: {NAMES[o]} at <span className="num">{score[rival].toFixed(2)}</span>.</p>
-    <div className="duel" aria-label={`First 12 rounds: ${NAMES[s]} against ${NAMES[o]}`}><span>This one</span>{row(0)}<span>Neighbour</span>{row(1)}</div>
+    <p>First 12 rounds against its toughest neighbour (the one it earns least from): {NAMES[f]}.</p>
+    <div className="duel" aria-label={`First 12 rounds: ${NAMES[s]} against ${NAMES[f]}`}><span>This one</span>{row(0)}<span>Neighbour</span>{row(1)}</div>
     {stormy && <p className="hint">Dashed squares are slips: it meant the other move.</p>}
+    {!stormy && trace.every(r => !r.actual[0] && !r.actual[1]) && <p className="hint">Neither ever defects first, so in calm weather they cooperate every round.</p>}
     <p className="next">Next generation: {next === s ? `stays ${NAMES[s]}` : `becomes ${NAMES[next]}`}</p>
   </section>;
 }

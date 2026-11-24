@@ -47,6 +47,18 @@ export function scores(world: World, m: Payoffs) {
   return out;
 }
 
+// The neighbour cell i earns least against in the averaged tables (not a searched trace); ties go to the higher scorer.
+export function toughest(world: World, m: Payoffs, score: Float64Array, i: number) {
+  const near = neighbours(Math.sqrt(world.cells.length));
+  const earn = (j: number) => (world.storm[i] || world.storm[j] ? m.storm : m.calm)[world.cells[i]][world.cells[j]];
+  let pick = near[i * 8];
+  for (let k = i * 8 + 1; k < i * 8 + 8; k++) {
+    const j = near[k], d = earn(j) - earn(pick);
+    if (d < -EPS || (d < EPS && score[j] > score[pick] + EPS)) pick = j;
+  }
+  return pick;
+}
+
 // Every cell copies the best scorer among itself and its neighbours (itself wins ties), then may mutate.
 export function step(world: World, m: Payoffs, mutation: number, key: string): World {
   const n = world.cells.length, near = neighbours(Math.sqrt(n)), score = scores(world, m), next = randomStream(key), cells = new Uint8Array(n);
