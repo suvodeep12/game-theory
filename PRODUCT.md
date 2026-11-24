@@ -24,7 +24,7 @@ Let visitors watch six prisoner's dilemma strategies compete for one world over 
 
 [Simulation rules](docs/simulation-rules.md) own exact model definitions; do not copy numbers into design documents.
 
-- Three screens: an opening, a five-card rules deck (story first; returning visitors skip it on that device), and the board: a 48 × 48 world, a score track that doubles as rewind, Play/Pause, Next turn, Reset and speed above the board, a tray of six pieces that doubles as the live leaderboard, Storm/Calm/Inspect/Big brush tools, four setup cards, and a mutation slider.
+- Three screens: an opening, a five-card rules deck (story first; returning visitors skip it on that device), and the board: a 48 × 48 world, a score track that doubles as rewind, Play/Pause, Next turn, Reset and speed above the board, a tray of six pieces that doubles as the live leaderboard, Storm/Calm/Inspect/Big brush tools, five setup cards (including Kaleidoscope, a one-shot game after Nowak & May), a mutation slider, a 48 × 48 or 96 × 96 board, a seventh piece the visitor designs, moments narrated on the score track, live rules cards, and optional sound.
 - Rules version 1 encounters are unchanged; the grid adds imitate-the-best-neighbour selection and mutation.
 - No backend, accounts, monetisation, submissions or leaderboards.
 - Few caveats on the page (user request); limits live in the repository docs.

@@ -206,6 +206,52 @@ input[type=range] { margin: 0; accent-color: var(--yellow); cursor: pointer; }
 .next { padding: 10px 12px; border-radius: 14px; background: var(--well); font-weight: 700; }
 .backdrop, .only-narrow { display: none; }
 
+/* Moments on the score track */
+.pin { position: absolute; top: 5px; z-index: 2; width: 16px; height: 16px; margin-left: -8px; padding: 0; border: 2.5px solid var(--ink); border-radius: 50%; cursor: pointer; }
+.pin:hover { transform: scale(1.25); }
+.moments { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 0; padding: 0; list-style: none; }
+.moments button { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 4px 12px 4px 8px; border: 0; border-radius: 999px; background: var(--well); color: var(--ink); font-size: 14px; font-weight: 600; text-align: left; }
+.moments button:hover { background: var(--hover); }
+.moments button[aria-current=true] { box-shadow: 0 0 0 2px var(--ink); }
+.moments i { flex: none; width: 12px; height: 12px; }
+.moments .num { font-weight: 800; }
+
+/* Header, board size, designer */
+.bar-actions { display: flex; gap: 8px; }
+.icon-only { width: 48px; padding: 0; }
+.setups-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.size { display: inline-flex; gap: 3px; padding: 3px; border-radius: 13px; background: var(--lid-raised); }
+.size button { min-height: 44px; padding: 0 12px; border: 0; border-radius: 10px; background: transparent; color: var(--on-lid-2); font-size: 14px; font-weight: 700; }
+.size button[aria-pressed=true] { background: var(--yellow); color: var(--ink); }
+.tool:disabled { opacity: .45; cursor: not-allowed; }
+.badge.soft { background: var(--well-2); color: var(--ink-2); }
+.builder { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 16px; background: var(--well); }
+.builder h3 { margin: 0; font: 400 20px/1.1 var(--display); }
+.choice { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; }
+.seg { display: inline-flex; gap: 3px; padding: 3px; border-radius: 12px; background: var(--well-2); }
+.seg button { min-width: 48px; min-height: 44px; border: 0; border-radius: 9px; background: transparent; color: var(--ink); font-weight: 800; }
+.seg button[aria-pressed=true] { background: var(--ink); color: var(--on-lid); }
+.check { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; font-weight: 600; }
+.check input { width: 20px; height: 20px; accent-color: var(--lid); }
+.check:has(input:disabled) { opacity: .5; }
+.builder .note { font-size: 14px; }
+
+/* Live rules cards */
+.match { display: flex; flex-direction: column; gap: 12px; }
+.match .duel { grid-template-columns: auto repeat(5, 36px); justify-content: start; }
+.duel .empty { border-radius: 50%; box-shadow: inset 0 0 0 2px var(--well-2); }
+.reveal { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; }
+.hood.live span:not(.mark) { animation: light .5s backwards; animation-delay: calc(var(--n) * .12s + .2s); }
+@keyframes light { from { transform: scale(.82); opacity: .2; } }
+
+/* Piece personality: they blink, the shelf bobs, a hover makes them hop. */
+.piece .eyes { transform-box: fill-box; transform-origin: center; animation: blink 6s infinite; animation-delay: calc(var(--i) * -.9s); }
+@keyframes blink { 0%, 95%, 100% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
+.shelf .piece { transform-origin: 50% 100%; animation: bob 3.4s ease-in-out infinite; animation-delay: calc(var(--i) * -.55s); }
+@keyframes bob { 50% { transform: translateY(-6px) rotate(-1.5deg); } }
+.tray-piece:hover .piece, .shelf .piece:hover, .six li:hover .piece { transform-origin: 50% 100%; animation: hop .45s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes hop { 40% { transform: translateY(-7px) rotate(-4deg); } 70% { transform: translateY(0) rotate(2deg); } }
+
 @media (hover: none) { .keys { display: none; } }
 @media (max-width: 900px) {
   .bar, .board-view .bar { max-width: 1360px; padding: 14px 24px; }
@@ -214,7 +260,7 @@ input[type=range] { margin: 0; accent-color: var(--yellow); cursor: pointer; }
 }
 @media (max-width: 640px) {
   body { font-size: 16px; }
-  .bar { padding: 8px 16px; }
+  .bar, .board-view .bar { gap: 8px; padding: 8px 16px; }
   .wordmark { font-size: 18px; }
   .opening { padding: 14px; }
   .frame { padding: 24px 18px 20px; border-radius: 24px; }
@@ -231,7 +277,9 @@ input[type=range] { margin: 0; accent-color: var(--yellow); cursor: pointer; }
   .payoffs td span { font-size: 12px; }
   .hide-narrow { display: none; }
   .only-narrow { display: inline; }
-  .icon-narrow { width: 44px; min-height: 44px; padding: 0; }
+  .icon-narrow, .icon-only { width: 44px; min-height: 44px; padding: 0; }
+  .board-view .wordmark { font-size: 16px; }
+  .bar-actions { gap: 6px; }
   .deck-nav { justify-content: space-between; flex-wrap: nowrap; gap: 4px; padding: 24px 16px; }
   .pips button { width: 30px; }
   .nav-spacer { width: 64px; }
@@ -255,9 +303,12 @@ input[type=range] { margin: 0; accent-color: var(--yellow); cursor: pointer; }
   .track { padding: 12px 12px 10px; }
   .tray { padding: 10px 8px 8px; border-radius: 18px; }
   .tray .card-head { padding: 0 6px; }
-  .pieces { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 5px; }
+  .pieces { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+  .reveal { grid-template-columns: 40px 1fr; }
+  .reveal .btn { grid-column: 1 / -1; }
+  .moments button { font-size: 13px; }
   .tray-piece { grid-template-columns: none; justify-items: center; gap: 0; padding: 6px 0 4px; border-radius: 12px; }
-  .tray-piece .piece { width: 30px; height: auto; }
+  .tray-piece .piece { width: 28px; height: auto; }
   .tp-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .tp-share { font-size: 15px; }
   .tool { min-height: 58px; font-size: 13px; }
@@ -265,5 +316,5 @@ input[type=range] { margin: 0; accent-color: var(--yellow); cursor: pointer; }
   .piece-card::before { content: ''; align-self: center; flex: none; width: 44px; height: 5px; border-radius: 3px; background: #c3c9e6; }
   .backdrop { display: block; position: fixed; inset: 0; z-index: 19; background: rgba(16, 23, 58, .45); }
 }
-@media (max-width: 360px) { .wordmark { font-size: 16px; } .turn { font-size: 22px; } }
+@media (max-width: 360px) { .wordmark, .board-view .wordmark { font-size: 14px; } .turn { font-size: 22px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

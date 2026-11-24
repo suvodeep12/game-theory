@@ -16,6 +16,7 @@ Node 22.12+ on the Node 22 line (verified with 22.23.1). `npm ci`, then `npm run
 - [`src/engine.ts`](src/engine.ts): seeded v1 encounters. [`src/evolution.ts`](src/evolution.ts): payoff tables, grid step, scenarios. [`src/App.tsx`](src/App.tsx): canvas world, timeline, palette, inspector.
 - [DESIGN.md](DESIGN.md): the Tabletop design system (cobalt box lid, white cards, six drawn game pieces) and the [Claude Design canvas](https://claude.ai/artifact/JirY1sph2tn7JN3XnXB9g6) it came from. Nice means never defects first: five round-headed pieces, one spiky Always Defect. [`src/Story.tsx`](src/Story.tsx): opening and rules deck. [`src/Pieces.tsx`](src/Pieces.tsx): the pieces.
 - [Validation](docs/validation.md): what was actually checked and what was not.
+- [`video/`](video/): a 39-second HyperFrames film of the game ("One bad apple"), drawn from the real engine; render with `npm run render` inside `video/`. Credits for its music and sounds: [video/CREDITS.md](video/CREDITS.md).
 
 The guided lab that came before (five topics, cumulative scoreboard) is recorded in the [design history](docs/design/HISTORY.md) and recoverable from commit `d19cc22`.
 

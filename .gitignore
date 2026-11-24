@@ -9,3 +9,10 @@ dist/
 .env
 .env.*
 .claude/
+
+# HyperFrames working files
+video/.hyperframes/
+video/.media/
+video/renders/
+video/.thumbnails/
+video/.waveform-cache/

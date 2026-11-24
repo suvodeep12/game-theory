@@ -2,7 +2,18 @@
 
 Updated 24 November 2026. This report describes local builds, not a validated model of human behaviour. The newest section is current; sections below it describe earlier interfaces (the model checks in them still hold).
 
-## Current: Tabletop redesign (24 November 2026)
+## Current: explains itself and feels crafted (24 November 2026)
+
+**Automated.** `npm test`: 20 pass. New: a designed piece C, C, D plays exactly like Tit for Tat against Always Defect, Grim and Win-Stay with errors on, and joins the tables as kind 6; Kaleidoscope from one defector keeps four-fold symmetry for 9 turns on a 21 × 21 world; moments find takeovers, extinctions, held lead changes and lost peaks (and ignore a two-turn lead). `npm run build` passes. Timing (Node, this machine): a turn takes 0.29 ms at 48 × 48 and 0.84 ms at 96 × 96; moments over 1,000 turns about 1 ms; the base tables 126 ms once at load; recomputing a designed piece 32 ms.
+
+**Browser** (desktop app's Chromium pane, `npm run dev`; the pane was hidden, so frame rates were not measurable there):
+- Rules card 1: five moves C, C, D, C, C against the hidden piece gave 14–14 and revealed Tit for Tat. Cards 3–4 on a fresh *One bad apple*: the cooperator next to the lone defector earns 3.00 from each of seven neighbours and 0.00 from the defector (2.62 on average; the 2.625 shows as 2.62 because of float averaging), and becomes Always Defect next turn.
+- Board: "Turn 13 · Always Defect takes the lead" appeared as a pin and in the list. The designer reported "plays exactly like Tit for Tat" for C, C, D, and "Generous Tit for Tat" with forgiveness. Kaleidoscope: symmetric pattern by turn 15, four-colour legend, temptation slider in place of mutation, Storm and Calm disabled, piece card explains the one-shot game. 96 × 96 ran at 4.9 px per cell. Sound toggle stored `gt-sound=1` and switched back off.
+- Phone: 375 and 320 px with no horizontal overflow; seven-across tray (43 px and 35 px wide buttons, 62 px tall), designer buttons 44 px tall. Fixed during checks: the board header wrapped to two rows on phones once the sound button was added.
+
+**Not verified.** How the sounds actually sound on speakers (only that no errors occur); animation smoothness on real devices; everything listed under *Not verified* below.
+
+## Tabletop redesign (24 November 2026)
 
 **Automated.** `npm test`: 17 pass (adds share labels: a present kind never reads 0%, a kind that is not alone never reads 100%). `npm run build`: type check and production build pass (JS 253 kB, 80 kB gzipped; CSS 19 kB; Lilita One and Rethink Sans font files bundled, Latin only).
 

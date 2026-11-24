@@ -26,6 +26,11 @@ colors:
   strategy-grim: "#6f3fd0"
   strategy-generous: "#8ccf4d"
   strategy-wsls: "#ff85b8"
+  strategy-yours: "#c07a3c"
+  kaleido-still-c: "#17b0a3"
+  kaleido-still-d: "#e5383b"
+  kaleido-to-d: "#ffc23d"
+  kaleido-to-c: "#8ccf4d"
 typography:
   display:
     fontFamily: "'Lilita One', 'Arial Rounded MT Bold', ui-rounded, system-ui, sans-serif"
@@ -101,6 +106,7 @@ Six SVG game pieces in a 48 × 60 box ([Pieces.tsx](src/Pieces.tsx)), ink outlin
 | Grim Trigger | Square head with a dark visor |
 | Generous Tit for Tat | A yellow halo |
 | Win-Stay, Lose-Shift | A spinner arrow (it switches) |
+| Your piece (designed) | A yellow star; wood colour. Round if it never defects first, square on the board otherwise |
 
 Nice means never defects first: the five nice pieces have round heads, Always Defect is the spike. On the board the same rule holds at token size: circles for the five, a rounded square for Always Defect. Brightness shows how well a piece is doing (dim = struggling).
 
@@ -113,6 +119,11 @@ Nice means never defects first: the five nice pieces have round heads, Always De
 
 ## Components
 
+- **Moments**: pins on the score track in the colour of the kind involved, plus a row of pill buttons ("Turn 13 · Always Defect takes the lead"); both jump to that turn.
+- **Piece designer**: appears in the tray when *Your piece* is selected. Three C/D segmented controls (selected = ink fill), a "sometimes forgives" checkbox, and one sentence describing the rule and which of the six it matches.
+- **Board size**: a 48 × 48 / 96 × 96 toggle beside *Setup cards*; selected = yellow.
+- **Sound**: an icon toggle in the board header (`aria-pressed`), off by default.
+
 - **Buttons**: yellow primary with a pressable shadow; translucent ghost on the lid; light (`well-2`) on dark banners. Minimum 44 px targets everywhere.
 - **Tray piece / tool / setup card**: `aria-pressed` toggles; selected shows the `picked` fill with a yellow-and-ink ring; the leader gets a *Leading* badge (none on ties).
 - **Piece card**: piece, name, plain rule, close; two stat tiles (score and weather, best nearby); a 12-round duel against the toughest neighbour where C is a light circle and D a dark square, slips get a dashed outline; then what it becomes next turn, tinted with that piece's colour.
@@ -120,6 +131,8 @@ Nice means never defects first: the five nice pieces have round heads, Always De
 - **Score track**: stacked shares over turns, a yellow knob at the current turn, the erased future drawn faded after you rewrite history. An invisible range input on top makes it keyboard-operable.
 
 ## Motion
+
+Pieces blink every few seconds (staggered per kind); the opening shelf bobs; hovering a piece in the tray, shelf or rules card makes it hop; on the board, converted pieces pop to 1.4× and settle over 0.7 s. Live rules cards light their neighbourhood tiles in sequence. Sounds (Web Audio, no files): a wooden clack when painting, a tick for selections, a paper swish when flipping rule cards, a two-note chime for a new moment, soft rain while a storm is on the board and playing.
 
 Cards deal in (0.26 s). Changed cells flash a cobalt ring for 0.7 s. Storms show falling rain. With reduced motion: no autoplay, no deal or flash, and rain stays still.
 

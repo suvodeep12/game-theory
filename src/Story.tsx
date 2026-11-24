@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import type { MouseEvent } from 'react';
-import { NAMES } from './engine.ts';
+import type { CSSProperties, MouseEvent } from 'react';
+import { NAMES, payoff } from './engine.ts';
+import type { Action } from './engine.ts';
 import { PLAIN, Piece } from './Pieces.tsx';
+import { sound } from './sound.ts';
 
 const Arrow = () => <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
 const SIX = [0, 1, 2, 3, 4, 5];
@@ -24,41 +26,62 @@ export function Opening() {
   </main>;
 }
 
+/** A real 3 × 3 neighbourhood from the board, centre at index 4, whose centre changes next turn. */
+export interface Example { turn: number; kinds: number[]; scores: number[]; earn: number[]; best: number }
+
 const LABELS = ['The choice', 'Meet the six', 'Neighbours', 'Copy the best', 'Your turn'];
 const POWERS = [
   { title: 'Paint pieces', text: 'Pick a piece and paint it anywhere on the board.', icon: 'M4 20l4-1L19 8l-3-3L5 16zM14 7l3 3' },
   { title: 'Make storms', text: 'Paint weather where moves slip and get misread.', icon: 'M7 15a4 4 0 0 1 .5-8A5.5 5.5 0 0 1 18 8a3.5 3.5 0 0 1 0 7zM9 18l-1 3M13 18l-1 3M17 18l-1 3' },
   { title: 'Rewind', text: 'Drag the score track back, then change the past.', icon: 'M4 12a8 8 0 1 0 3-6.2M4 4v5h5M12 8v4l3 2' },
   { title: 'Inspect', text: 'Tap any piece to see why it is winning or losing.', icon: 'M10.5 4a6.5 6.5 0 1 1 0 13a6.5 6.5 0 1 1 0-13zM15.5 15.5L20 20' },
+  { title: 'Design a piece', text: 'Invent a seventh rule and drop it in.', icon: 'M12 2l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17l-5.9 3 1.2-6.5L2.5 8.9 9.1 8z' },
 ];
-// Illustrative neighbourhoods for rules 3 and 4; the scores are labelled as examples on the card.
-const HOOD = [0, 2, 0, 1, 2, 0, 0, 4, 0];
-const BEFORE = [2, 0, 3, 1, 0, 2, 2, 4, 0], AFTER = [2, 0, 3, 1, 2, 2, 2, 4, 0];
-const SCORES = ['3.00', '2.88', '2.75', '1.50', '2.63', '2.75', '2.75', '2.88', '2.88'];
+// Fallback when the board has no piece about to change; labelled as an example on the card.
+const STATIC: Example = { turn: -1, kinds: [2, 0, 3, 1, 0, 2, 2, 4, 0], scores: [3, 2.88, 2.75, 1.5, 2.63, 2.75, 2.75, 2.88, 2.88], earn: [3, 3, 3, 0, 2.63, 3, 3, 3, 3], best: 0 };
+const RIVALS = [2, 3, 1, 5, 0, 4]; // the hidden opponent for each new match, in turn
 
-// mark: highlighted yellow (best or just changed); ring: outlined (the piece deciding).
-function Hood({ kinds, mark, ring = -1, scores, compact, label }: { kinds: number[]; mark: number; ring?: number; scores?: string[]; compact?: boolean; label: string }) {
-  return <div className={`hood${compact ? ' compact' : ''}`} role="img" aria-label={label}>
-    {kinds.map((k, i) => <span key={i} className={i === mark ? 'mark' : i === ring ? 'ring' : undefined}>
-      <Piece s={k} size={compact ? 34 : 40} stroke={2.4} face={!compact} />{scores && <b className="num">{scores[i]}</b>}
+// What a hidden v1 strategy plays next, error-free, given both histories.
+function reply(rival: number, mine: Action[], theirs: Action[]): Action {
+  const t = mine.length, last = mine[t - 1];
+  if (rival === 0) return 0;
+  if (rival === 1) return 1;
+  if (!t) return 0;
+  if (rival === 3) return mine.includes(1) ? 1 : 0;
+  if (rival === 5) { const got = payoff(theirs[t - 1], last)[0]; return got === 3 || got === 5 ? theirs[t - 1] : (1 - theirs[t - 1]) as Action; }
+  if (rival === 4 && last === 1 && Math.random() < .1) return 0;
+  return last;
+}
+
+function Hood({ kinds, mark, ring = -1, labels, compact, live, label }: { kinds: number[]; mark: number; ring?: number; labels?: string[]; compact?: boolean; live?: boolean; label: string }) {
+  return <div className={`hood${compact ? ' compact' : ''}${live ? ' live' : ''}`} role="img" aria-label={label}>
+    {kinds.map((k, i) => <span key={i} className={i === mark ? 'mark' : i === ring ? 'ring' : undefined} style={{ '--n': i < 4 ? i : i - 1 } as CSSProperties}>
+      <Piece s={k} size={compact ? 34 : 40} stroke={2.4} face={!compact} />{labels && <b className="num">{labels[i]}</b>}
     </span>)}
   </div>;
 }
 
 // start: the label that sends a first-time visitor to the fresh board, or null once a game is under way.
-export function Rules({ onHome, start }: { onHome: (e: MouseEvent) => void; start: string | null }) {
+export function Rules({ onHome, start, example, names }: { onHome: (e: MouseEvent) => void; start: string | null; example: Example | null; names: string[] }) {
   const [card, setCard] = useState(0);
-  const [move, setMove] = useState<'C' | 'D' | null>(null);
-  const go = (n: number) => setCard(Math.max(0, Math.min(4, n)));
+  const [match, setMatch] = useState({ rival: 0, mine: [] as Action[], theirs: [] as Action[] });
+  const go = (n: number) => { const c = Math.max(0, Math.min(4, n)); if (c !== card) sound.flip(); setCard(c); };
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
       if (e.altKey || e.ctrlKey || e.metaKey || (e.target as HTMLElement).closest('input, textarea, select')) return;
-      if (e.key === 'ArrowRight') setCard(c => Math.min(4, c + 1));
-      if (e.key === 'ArrowLeft') setCard(c => Math.max(0, c - 1));
+      if (e.key === 'ArrowRight') setCard(c => { if (c < 4) sound.flip(); return Math.min(4, c + 1); });
+      if (e.key === 'ArrowLeft') setCard(c => { if (c > 0) sound.flip(); return Math.max(0, c - 1); });
     };
     addEventListener('keydown', key);
     return () => removeEventListener('keydown', key);
   }, []);
+
+  const { mine, theirs } = match, rival = RIVALS[match.rival], done = mine.length === 5, t = mine.length;
+  const move = (a: Action) => { if (done) return; sound.clack(); setMatch(m => ({ ...m, mine: [...m.mine, a], theirs: [...m.theirs, reply(rival, m.mine, m.theirs)] })); };
+  const total = (p: 0 | 1) => mine.reduce<number>((s, a, k) => s + payoff(a, theirs[k])[p], 0);
+  const lastCell = t ? `${mine[t - 1] ? 'd' : 'c'}${theirs[t - 1] ? 'd' : 'c'}` : '';
+  const ex = example ?? STATIC, live = !!example, c = ex.kinds[4];
+  const f2 = (x: number) => x.toFixed(2);
 
   return <main className="lid rules">
     <header className="bar">
@@ -81,19 +104,25 @@ export function Rules({ onHome, start }: { onHome: (e: MouseEvent) => void; star
             <thead><tr><td /><th scope="col">They play C</th><th scope="col">They play D</th></tr></thead>
             <tbody>
               <tr><th scope="row">You play C</th>
-                <td className={`cc${move === 'C' ? ' picked' : ''}`}><b>3 · 3</b><span>Both do well</span></td>
-                <td className="cd"><b>0 · 5</b><span>You get taken</span></td></tr>
+                <td className={`cc${lastCell === 'cc' ? ' picked' : ''}`}><b>3 · 3</b><span>Both do well</span></td>
+                <td className={`cd${lastCell === 'cd' ? ' picked' : ''}`}><b>0 · 5</b><span>You get taken</span></td></tr>
               <tr><th scope="row">You play D</th>
-                <td className={`dc${move === 'D' ? ' picked' : ''}`}><b>5 · 0</b><span>You take them</span></td>
-                <td className="dd"><b>1 · 1</b><span>Both lose out</span></td></tr>
+                <td className={`dc${lastCell === 'dc' ? ' picked' : ''}`}><b>5 · 0</b><span>You take them</span></td>
+                <td className={`dd${lastCell === 'dd' ? ' picked' : ''}`}><b>1 · 1</b><span>Both lose out</span></td></tr>
             </tbody>
           </table>
-          <div className="try">
-            <span>Try it:</span>
-            <button className="move" aria-pressed={move === 'C'} onClick={() => setMove('C')}>C · Cooperate</button>
-            <button className="move" aria-pressed={move === 'D'} onClick={() => setMove('D')}>D · Defect</button>
+          <div className="match">
+            <div className="try">
+              <span>{done ? 'Match over.' : `Play a mystery piece · round ${t + 1} of 5:`}</span>
+              {!done && <><button className="move" onClick={() => move(0)}>C · Cooperate</button><button className="move" onClick={() => move(1)}>D · Defect</button></>}
+            </div>
+            {t > 0 && <div className="duel" role="img" aria-label={`You: ${mine.map(a => (a ? 'D' : 'C')).join(', ')}. Them: ${theirs.map(a => (a ? 'D' : 'C')).join(', ')}.`}>
+              <span>You · {total(0)}</span>{[0, 1, 2, 3, 4].map(k => <i key={k} className={k < t ? (mine[k] ? 'd' : 'c') : 'empty'}>{k < t ? (mine[k] ? 'D' : 'C') : ''}</i>)}
+              <span>Them · {total(1)}</span>{[0, 1, 2, 3, 4].map(k => <i key={k} className={k < t ? (theirs[k] ? 'd' : 'c') : 'empty'}>{k < t ? (theirs[k] ? 'D' : 'C') : ''}</i>)}
+            </div>}
+            {done && <p className="result reveal" role="status"><Piece s={rival} size={40} /><span>You were playing <strong>{NAMES[rival]}</strong>. {PLAIN[rival]}</span>
+              <button className="btn light" onClick={() => setMatch(m => ({ rival: (m.rival + 1) % RIVALS.length, mine: [], theirs: [] }))}>Play another</button></p>}
           </div>
-          {move && <p className="result" role="status">{move === 'C' ? 'They played C too. You score 3, they score 3.' : 'They played C. You score 5, they score 0. One win, but these pieces will meet again, round after round.'}</p>}
         </>}
 
         {card === 1 && <>
@@ -106,20 +135,20 @@ export function Rules({ onHome, start }: { onHome: (e: MouseEvent) => void; star
           <div className="text-col">
             <h2>Every turn, each piece plays all eight neighbours.</h2>
             <p className="muted">Each meeting is a long match of a few hundred rounds. A piece’s score is its average points per round across all eight.</p>
-            <p className="muted">The board wraps around: a piece on the left edge neighbours the right edge.</p>
+            <p className="muted">{live ? <>Live from your board, turn {ex.turn}: this {names[c]} earns the points shown against each neighbour, <strong>{f2(ex.scores[4])}</strong> a round on average.</> : 'The board wraps around: a piece on the left edge neighbours the right edge.'}</p>
           </div>
-          <Hood kinds={HOOD} mark={4} label="A Tit for Tat piece in the middle of its eight neighbours" />
+          <Hood kinds={ex.kinds} mark={4} labels={live ? ex.earn.map((x, i) => (i === 4 ? f2(ex.scores[4]) : `+${f2(x)}`)) : undefined} live={live} label={live ? `This ${names[c]} earns ${ex.earn.filter((_, i) => i !== 4).map(f2).join(', ')} against its eight neighbours` : 'A piece in the middle of its eight neighbours'} />
         </div>}
 
         {card === 3 && <>
           <h2>Then every piece becomes the best scorer nearby.</h2>
           <div className="before-after">
-            <Hood kinds={BEFORE} mark={0} ring={4} scores={SCORES} compact label="Before: the middle Always Cooperate scores 2.63; the Tit for Tat in the top left scores 3.00, the best nearby" />
+            <Hood kinds={ex.kinds} mark={ex.best} ring={4} labels={ex.scores.map(f2)} compact label={`Before: the middle ${names[c]} scores ${f2(ex.scores[4])}; the best nearby, a ${names[ex.kinds[ex.best]]}, scores ${f2(ex.scores[ex.best])}`} />
             <svg viewBox="0 0 44 24" width="44" height="24" aria-hidden="true"><path d="M2 12h36M30 4l9 8-9 8" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            <Hood kinds={AFTER} mark={4} compact label="After: the middle piece has become Tit for Tat" />
+            <Hood kinds={ex.kinds.map((k, i) => (i === 4 ? ex.kinds[ex.best] : k))} mark={4} compact label={`After: the middle piece becomes ${names[ex.kinds[ex.best]]}`} />
           </div>
           <p className="muted">Each piece compares itself with its eight neighbours and turns into whoever scored highest. If it already scores best, it stays. Now and then, mutation also turns a random piece into any of the six.</p>
-          <p className="muted small">Example scores, in points per round.</p>
+          <p className="muted small">{live ? `Live from your board, turn ${ex.turn}. Scores in points per round.` : 'Example scores, in points per round.'}</p>
         </>}
 
         {card === 4 && <>

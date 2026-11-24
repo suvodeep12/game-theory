@@ -1,0 +1,379 @@
+<template>
+  <style>
+    @font-face { font-family: 'Lilita One'; src: url('assets/fonts/lilita-one-latin-400-normal.woff2') format('woff2'); font-weight: 400; }
+    @font-face { font-family: 'Rethink Sans'; src: url('assets/fonts/rethink-sans-latin-500-normal.woff2') format('woff2'); font-weight: 500; }
+    @font-face { font-family: 'Rethink Sans'; src: url('assets/fonts/rethink-sans-latin-700-normal.woff2') format('woff2'); font-weight: 700; }
+    @font-face { font-family: 'Rethink Sans'; src: url('assets/fonts/rethink-sans-latin-800-normal.woff2') format('woff2'); font-weight: 800; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #2340c4; color: #f5f7ff; font-family: 'Rethink Sans', sans-serif; font-weight: 500; }
+    #g-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1720px; transform-origin: 0 0; }
+    #g-world * { box-sizing: border-box; }
+    .g-abs { position: absolute; }
+    .g-wordmark { left: 338px; top: 30px; font: 400 32px/1 'Lilita One'; text-transform: uppercase; letter-spacing: .01em; }
+    .g-btn { display: flex; align-items: center; justify-content: center; gap: 12px; border-radius: 20px; font-weight: 700; font-size: 23px; }
+    .g-ghost { background: rgba(245, 247, 255, .12); color: #f5f7ff; }
+    .g-yellow { background: #ffd23a; color: #10173a; font-weight: 800; box-shadow: 0 6px 0 #c99a00; }
+    .g-turn { left: 884px; top: 104px; font: 400 46px/64px 'Lilita One'; }
+    .g-speed { left: 1236px; top: 100px; width: 346px; height: 64px; display: flex; align-items: center; gap: 14px; color: #dbe2ff; font-weight: 700; font-size: 21px; }
+    .g-track { flex: 1; height: 8px; border-radius: 4px; background: rgba(245, 247, 255, .3); position: relative; }
+    .g-track i { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: 4px; background: #ffd23a; }
+    .g-card { background: #f5f7ff; color: #10173a; border-radius: 30px; }
+    .g-boardcard { left: 338px; top: 190px; width: 748px; height: 836px; box-shadow: 0 20px 0 #142a8f; }
+    .g-boardhead { left: 356px; top: 202px; width: 712px; display: flex; justify-content: space-between; font-size: 19px; font-weight: 700; color: #10173a; }
+    .g-boardhead span:last-child { color: #4a5585; font-weight: 600; }
+    .g-chip { display: inline-block; width: 17px; height: 17px; border-radius: 5px; margin: 0 8px -2px 6px; box-shadow: inset 0 0 0 2px #10173a; }
+    .g-field { left: 352px; top: 240px; width: 720px; height: 720px; border-radius: 14px; background: #e6e9f8; }
+    .g-legend { left: 360px; top: 976px; display: flex; gap: 26px; font-size: 18px; font-weight: 600; color: #4a5585; }
+    .g-legend span { display: flex; align-items: center; gap: 10px; }
+    .g-legend i { width: 18px; height: 18px; border-radius: 50%; }
+    .g-legend i.sq { border-radius: 4px; }
+    .g-tray { left: 1122px; top: 190px; width: 460px; height: 638px; }
+    .g-cardhead { display: flex; justify-content: space-between; align-items: baseline; color: #10173a; }
+    .g-cardhead b { font: 400 32px/1 'Lilita One'; }
+    .g-cardhead span { font-size: 18px; font-weight: 600; color: #4a5585; }
+    .g-row { left: 1140px; width: 424px; height: 60px; border-radius: 20px; background: #eef1ff; display: grid; grid-template-columns: 50px 1fr auto; gap: 12px; align-items: center; padding: 0 16px 0 10px; color: #10173a; }
+    .g-row.on, .g-tool.on { background: #fff6cf; box-shadow: 0 0 0 4px #ffd23a, 0 0 0 6px #10173a; }
+    .g-row svg { width: 40px; height: 50px; }
+    .g-row .n { font-weight: 700; font-size: 19px; line-height: 1.1; display: flex; flex-direction: column; gap: 6px; }
+    .g-row .bar { display: block; height: 7px; border-radius: 4px; background: #dfe3f4; overflow: hidden; }
+    .g-row .bar i { display: block; height: 100%; border-radius: 4px; }
+    .g-row .s { font: 400 26px/1 'Lilita One'; font-variant-numeric: tabular-nums; min-width: 66px; text-align: right; }
+    .g-badge { position: absolute; top: 8px; padding: 2px 10px; border-radius: 999px; background: #ffd23a; color: #10173a; font-size: 14px; font-weight: 800; }
+    .g-shift { position: absolute; left: 0; top: 0; width: 1920px; height: 1720px; pointer-events: none; }
+    .g-tools { left: 1140px; top: 724px; width: 424px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding-top: 14px; border-top: 3px solid #e6e8f2; }
+    .g-tool { height: 80px; border-radius: 18px; background: #eef1ff; color: #10173a; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 18px; font-weight: 700; }
+    .g-tool svg { width: 28px; height: 28px; }
+    .g-designer { left: 1140px; top: 716px; width: 424px; height: 296px; border-radius: 20px; background: #eef1ff; color: #10173a; padding: 18px; display: flex; flex-direction: column; gap: 10px; transform-origin: 50% 0; }
+    .g-designer b.h { font: 400 26px/1.1 'Lilita One'; }
+    .g-choice { display: flex; justify-content: space-between; align-items: center; font-size: 19px; font-weight: 700; }
+    .g-seg { display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: #e6e8f2; }
+    .g-seg span { width: 58px; height: 46px; border-radius: 11px; display: grid; place-items: center; font-weight: 800; font-size: 20px; }
+    .g-seg span.on { background: #10173a; color: #f5f7ff; }
+    .g-note { position: relative; font-size: 19px; line-height: 1.3; color: #4a5585; height: 74px; }
+    .g-note span { position: absolute; inset: 0; }
+    .g-setuphead { left: 1122px; top: 856px; width: 460px; display: flex; justify-content: space-between; align-items: center; }
+    .g-setuphead b { font: 400 32px/1 'Lilita One'; }
+    .g-size { display: flex; gap: 4px; padding: 4px; border-radius: 16px; background: #2a48d6; font-size: 17px; font-weight: 700; color: #dbe2ff; }
+    .g-size span { padding: 12px 14px; border-radius: 12px; }
+    .g-size span.on { background: #ffd23a; color: #10173a; }
+    .g-setup { left: 1122px; width: 460px; height: 84px; border-radius: 22px; background: #2a48d6; box-shadow: inset 0 0 0 3px rgba(245, 247, 255, .14); padding: 14px 20px; display: flex; flex-direction: column; gap: 2px; }
+    .g-setup.on { background: #3354e0; box-shadow: inset 0 0 0 4px #ffd23a; }
+    .g-setup b { font-size: 21px; display: flex; justify-content: space-between; }
+    .g-setup b em { font-style: normal; padding: 2px 10px; border-radius: 999px; background: #ffd23a; color: #10173a; font-size: 14px; font-weight: 800; opacity: 0; }
+    .g-setup.on b em { opacity: 1; }
+    .g-setup span { font-size: 17px; color: #dbe2ff; }
+    .g-trackcard { left: 338px; top: 1066px; width: 748px; height: 352px; }
+    .g-trackhead { left: 360px; top: 1088px; width: 704px; }
+    .g-river { left: 356px; top: 1136px; width: 712px; height: 144px; border-radius: 16px; background: #e6e9f8; overflow: hidden; }
+    .g-axis { left: 360px; top: 1288px; width: 704px; display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; color: #4a5585; }
+    .g-pin { position: absolute; top: 1144px; width: 20px; height: 20px; margin-left: -10px; border-radius: 50%; border: 3px solid #10173a; transform-origin: 50% 50%; }
+    .g-pills { left: 356px; top: 1320px; width: 712px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .g-pill { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 16px 0 12px; border-radius: 999px; background: #eef1ff; color: #10173a; font-size: 19px; font-weight: 600; transform-origin: 0 50%; }
+    .g-pill i { width: 14px; height: 14px; border-radius: 50%; }
+    .g-pill i.sq { border-radius: 3px; }
+    .g-pill b { font-weight: 800; }
+    #g-board { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #g-spike { position: absolute; left: 870px; top: 380px; width: 180px; height: 225px; }
+    .g-banner.low { top: auto; bottom: 96px; }
+    .g-banner { position: absolute; left: 120px; top: 92px; padding: 26px 38px; border-radius: 24px; background: #10173a; color: #f5f7ff; font: 400 76px/1.05 'Lilita One'; box-shadow: 0 10px 0 rgba(16, 23, 58, .3); white-space: nowrap; }
+    .g-maintitle { position: absolute; left: 110px; top: 330px; font: 400 112px/.92 'Lilita One'; text-transform: uppercase; letter-spacing: .01em; color: #f5f7ff; text-shadow: 0 9px 0 #142a8f; }
+    .g-maintitle span { display: block; transform-origin: 0 50%; }
+    .g-claim { position: absolute; left: 280px; top: 380px; width: 1360px; height: 320px; border-radius: 40px; background: #2340c4; box-shadow: 0 16px 0 #142a8f; display: grid; place-items: center; }
+    .g-claim span { font: 400 120px/1 'Lilita One'; color: #f5f7ff; text-shadow: 0 8px 0 #142a8f; white-space: nowrap; }
+    #g-cursor { position: absolute; left: 0; top: 0; width: 50px; height: 72px; transform-origin: 6px 4px; }
+  </style>
+
+  <div id="root" data-composition-id="game" data-width="1920" data-height="1080">
+    <div id="g-world" data-layout-allow-overflow>
+      <div class="g-abs g-wordmark">Who inherits the world?</div>
+      <div class="g-abs g-btn g-ghost" style="left: 1414px; top: 22px; width: 56px; height: 56px; padding: 0"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4zM16 9.5l5 5M21 9.5l-5 5"/></svg></div>
+      <div class="g-abs g-btn g-ghost" style="left: 1480px; top: 22px; width: 102px; height: 56px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>Rules</div>
+      <div id="g-play" class="g-abs g-btn g-yellow" style="left: 338px; top: 100px; width: 164px; height: 64px"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path id="g-playicon" d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg><span id="g-playlabel">Pause</span></div>
+      <div class="g-abs g-btn g-ghost" style="left: 516px; top: 100px; width: 196px; height: 64px"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l11 8-11 8zM17 4h3v16h-3z"/></svg>Next turn</div>
+      <div class="g-abs g-btn g-ghost" style="left: 726px; top: 100px; width: 144px; height: 64px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5"/></svg>Reset</div>
+      <div id="g-turn" class="g-abs g-turn">Turn 0</div>
+      <div class="g-abs g-speed">Speed<span class="g-track"><i style="width: 26%"></i></span><span style="color: #f5f7ff">6 turns/s</span></div>
+
+      <div class="g-abs g-card g-boardcard"></div>
+      <div class="g-abs g-boardhead"><span id="g-mode">Painting:<i class="g-chip" id="g-modechip" style="background: #e5383b; border-radius: 4px"></i><span id="g-modename">Always Defect</span></span><span>Space plays or pauses · → steps</span></div>
+      <div class="g-abs g-field"></div>
+      <div id="g-legend-std" class="g-abs g-legend" data-layout-allow-overlap><span><i style="background: #17b0a3"></i>Bright: thriving</span><span><i style="background: #17b0a3; opacity: .4"></i>Dim: struggling</span><span><i class="sq" style="background: #e5383b"></i>Square: defects first</span></div>
+      <div id="g-legend-k" class="g-abs g-legend" style="opacity: 0"><span><i style="background: #17b0a3"></i>Still cooperating</span><span><i class="sq" style="background: #e5383b"></i>Still defecting</span><span><i class="sq" style="background: #ffc23d"></i>Just turned D</span><span><i style="background: #8ccf4d"></i>Just turned C</span></div>
+
+      <div class="g-abs g-card g-trackcard"></div>
+      <div class="g-abs g-cardhead g-trackhead"><b>Score track</b><span>Drag back to rewind. Paint the past to rewrite it.</span></div>
+      <div class="g-abs g-river"><canvas id="g-track" width="1424" height="288" style="width: 712px; height: 144px"></canvas></div>
+      <div class="g-abs g-axis"><span>Turn 0</span><span>50</span><span>99</span></div>
+      <div id="g-pins"></div>
+      <div id="g-pills" class="g-abs g-pills"></div>
+
+      <div class="g-abs g-card g-tray"></div>
+      <div class="g-abs g-cardhead" style="left: 1144px; top: 212px; width: 416px"><b>Your tray</b><span>Share of the board</span></div>
+      <div id="g-rows"></div>
+      <div id="g-designer" class="g-abs g-designer" style="opacity: 0">
+        <b class="h">Design your piece</b>
+        <div class="g-choice">First move<span class="g-seg"><span id="g-first-c">C</span><span id="g-first-d" class="on">D</span></span></div>
+        <div class="g-choice">If they play C<span class="g-seg"><span class="on">C</span><span>D</span></span></div>
+        <div class="g-choice">If they play D<span class="g-seg"><span>C</span><span class="on">D</span></span></div>
+        <div class="g-note"><span id="g-note-a">Starts with D; answers C with C and D with D. It can defect first, so it shows as a square.</span><span id="g-note-b" style="opacity: 0">Starts with C; answers C with C and D with D. It plays exactly like Tit for Tat.</span></div>
+      </div>
+      <div id="g-lower" class="g-shift">
+        <div class="g-abs g-tools">
+          <div id="g-tool-storm" class="g-tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15a4 4 0 0 1 .5-8A5.5 5.5 0 0 1 18 8a3.5 3.5 0 0 1 0 7zM9 18l-1 3M13 18l-1 3M17 18l-1 3"/></svg>Storm</div>
+          <div class="g-tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7a5 5 0 1 1 0 10a5 5 0 1 1 0-10zM12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>Calm</div>
+          <div class="g-tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 4a6.5 6.5 0 1 1 0 13a6.5 6.5 0 1 1 0-13zM15.5 15.5L20 20"/></svg>Inspect</div>
+          <div class="g-tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5a7 7 0 1 1 0 14a7 7 0 1 1 0-14z"/></svg>Big brush</div>
+        </div>
+        <div class="g-abs g-setuphead"><b>Setup cards</b><span class="g-size"><span class="on">48 × 48</span><span>96 × 96</span></span></div>
+        <div class="g-abs g-setup" style="top: 924px"><b>Even mix<em>On the board</em></b><span>All six, scattered at random.</span></div>
+        <div id="g-setup-apple" class="g-abs g-setup on" style="top: 1018px"><b>One bad apple<em>On the board</em></b><span>A trusting world, one defector, a few copycats.</span></div>
+        <div class="g-abs g-setup" style="top: 1112px"><b>Last stand<em>On the board</em></b><span>Four Tit for Tats in a world of defectors.</span></div>
+        <div class="g-abs g-setup" style="top: 1206px"><b>Storm front<em>On the board</em></b><span>Calm west, stormy east: who survives mistakes?</span></div>
+        <div id="g-setup-k" class="g-abs g-setup" style="top: 1300px"><b>Kaleidoscope<em>On the board</em></b><span>One defector, a sea of cooperators, a one-shot game.</span></div>
+      </div>
+    </div>
+
+    <canvas id="g-board" width="1920" height="1080" data-layout-ignore></canvas>
+
+    <div id="g-spike-host" class="clip" data-start="0" data-duration="1.4" data-track-index="2" data-layout-ignore>
+      <svg id="g-spike" viewBox="0 0 48 60"><path d="M24 5L37 46c1 4-3 6-13 6s-14-2-13-6z" fill="#e5383b" stroke="#10173a" stroke-width="1.6" stroke-linejoin="round"/><circle cx="20.5" cy="31" r="2.1" fill="#10173a"/><circle cx="27.5" cy="31" r="2.1" fill="#10173a"/><path d="M17.5 26.5l5 2M30.5 26.5l-5 2M21 37h6" fill="none" stroke="#10173a" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </div>
+
+    <div id="g-b1" class="clip" data-layout-allow-occlusion data-start="3.3" data-duration="2.35" data-track-index="2"><div id="g-b1-in" class="g-banner">One defector. Everyone else trusts.</div></div>
+    <div id="g-b2" class="clip" data-layout-allow-occlusion data-start="5.8" data-duration="1.95" data-track-index="2"><div id="g-b2-in" class="g-banner">Every turn, they copy the best.</div></div>
+    <div id="g-title" class="clip" data-start="8.7" data-duration="2.2" data-track-index="2"><div class="g-maintitle"><span id="g-title-1">Who inherits</span><span id="g-title-2">the world?</span></div></div>
+    <div id="g-b3" class="clip" data-layout-allow-occlusion data-start="11.2" data-duration="2.2" data-track-index="2"><div id="g-b3-in" class="g-banner">Then Tit for Tat fights back.</div></div>
+    <div id="g-b4" class="clip" data-layout-allow-occlusion data-start="17.9" data-duration="2.1" data-track-index="2"><div id="g-b4-in" class="g-banner low">Then you rig the game.</div></div>
+    <div id="g-claim-host" class="clip" data-start="32.8" data-duration="2.6" data-track-index="2"><div id="g-claim" class="g-claim"><span id="g-claim-text">No winner is scripted.</span></div></div>
+
+    <svg id="g-cursor" viewBox="0 0 25 36" data-layout-ignore><path d="M3 2v26l7-6.5 4.5 10.5 4.5-2-4.5-10H24z" fill="#10173a" stroke="#f5f7ff" stroke-width="2.2" stroke-linejoin="round"/></svg>
+  </div>
+
+  <script src="assets/game-data.js"></script>
+  <script>
+    (function () {
+      const D = window.GT;
+      const COLORS = ['#ffc23d', '#e5383b', '#17b0a3', '#6f3fd0', '#8ccf4d', '#ff85b8', '#c07a3c'];
+      const KALEIDO = ['#17b0a3', '#e5383b', '#ffc23d', '#8ccf4d'];
+      const NAMES = ['Always Cooperate', 'Always Defect', 'Tit for Tat', 'Grim Trigger', 'Generous Tit for Tat', 'Win-Stay, Lose-Shift', 'Your piece'];
+      const INK = '#10173a';
+      // The app's piece paths (src/Pieces.tsx).
+      const BASE = 'M15 33c0-3 4-4 9-4s9 1 9 4l4 14c1 3-3 5-13 5S10 50 11 47z', PAWN = BASE + 'M24 9a10 10 0 1 1 0 20a10 10 0 1 1 0-20z';
+      const LOOKS = [
+        [PAWN, '', 'none', 18], ['M24 5L37 46c1 4-3 6-13 6s-14-2-13-6z', '', 'none', 31],
+        ['M14 6.5a4.5 4.5 0 1 1 0 9a4.5 4.5 0 1 1 0-9zM34 6.5a4.5 4.5 0 1 1 0 9a4.5 4.5 0 1 1 0-9z' + PAWN, '', 'none', 18],
+        [BASE + 'M15 9h18a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H15a4 4 0 0 1-4-4V13a4 4 0 0 1 4-4z', 'M11 12h26v4H11z', INK, 20.5],
+        [PAWN, 'M15 5.5a9 2.8 0 1 0 18 0a9 2.8 0 1 0-18 0z', '#ffd23a', 18],
+        [PAWN, 'M17 7a7 4 0 0 1 14 0M31 7l-4.5-.8M31 7l.6-4.4', 'none', 18],
+        [PAWN, 'M24 0l2.2 4.4 4.8.7-3.5 3.4.8 4.8-4.3-2.3-4.3 2.3.8-4.8-3.5-3.4 4.8-.7z', '#ffd23a', 18],
+      ];
+      const piece = (s) => `<svg viewBox="0 0 48 60"><path d="${LOOKS[s][0]}" fill="${COLORS[s]}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>${LOOKS[s][1] ? `<path d="${LOOKS[s][1]}" fill="${LOOKS[s][2]}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>` : ''}<circle cx="20.5" cy="${LOOKS[s][3]}" r="2.6" fill="${INK}"/><circle cx="27.5" cy="${LOOKS[s][3]}" r="2.6" fill="${INK}"/></svg>`;
+
+      // Static tray rows and moment pills/pins (not timed elements; their state is set from time in render()).
+      const rows = document.getElementById('g-rows');
+      rows.innerHTML = NAMES.map((n, s) => `<div id="g-row-${s}" class="g-abs g-row" style="top: ${250 + s * 66}px">${piece(s)}<span class="n">${n}<span class="bar"><i id="g-bar-${s}" style="background: ${COLORS[s]}; width: 0%"></i></span></span><span id="g-share-${s}" class="s">0%</span></div>`).join('') + '<div id="g-lead" class="g-badge" style="opacity: 0">Leading</div>';
+      document.getElementById('g-pins').innerHTML = D.marks.map((m, i) => `<div id="g-pin-${i}" class="g-pin" style="left: ${356 + m.turn / 99 * 712}px; background: ${COLORS[m.kind]}; opacity: 0"></div>`).join('');
+      document.getElementById('g-pills').innerHTML = D.marks.map((m, i) => `<div id="g-pill-${i}" class="g-pill" style="opacity: 0"><i class="${m.kind === 1 ? 'sq' : ''}" style="background: ${COLORS[m.kind]}"></i><b>Turn ${m.turn}</b>${m.text}</div>`).join('');
+
+      // ---- Time maps (seconds -> values). Everything visible is a function of t.
+      const lerp = (a, b, p) => a + (b - a) * p;
+      const ease = (p) => (p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2); // cubic in-out
+      const keyed = (keys, t, fn) => {
+        if (t <= keys[0][0]) return keys[0].slice(1);
+        for (let i = 1; i < keys.length; i++) if (t <= keys[i][0]) {
+          const a = keys[i - 1], b = keys[i], p = fn((t - a[0]) / (b[0] - a[0]));
+          return a.slice(1).map((v, k) => (k === 2 && a.length > 3 ? Math.exp(lerp(Math.log(v), Math.log(b[k + 1]), p)) : lerp(v, b[k + 1], p)));
+        }
+        return keys[keys.length - 1].slice(1);
+      };
+      // Camera: [t, cx, cy, scale] in world px; zoom interpolates in log space.
+      const CAM = [[0, 719.5, 607.5, 7.2], [2.4, 719.5, 607.5, 7.2], [7.6, 497, 600, 1.35], [9.4, 421, 528, .72], [10.8, 421, 528, .72], [12.0, 554, 442, 3.0], [13.6, 590, 470, 2.7], [14.6, 712, 1238, 1.55], [17.8, 712, 1238, 1.55], [18.8, 960, 640, 1.0], [22.2, 960, 640, 1.0], [22.8, 1352, 860, 1.5], [25.0, 1352, 860, 1.5], [25.5, 960, 640, 1.0], [26.4, 960, 640, 1.0], [26.8, 1150, 1310, 1.0], [27.15, 1150, 1310, 1.0], [28.2, 712, 618, 1.3], [35.4, 712, 618, 1.3]];
+      // Board turn as a float: [t, turn].
+      const TURN = [[0, 0], [2.4, 0], [7.6, 14], [10.8, 18], [13.4, 24], [14.6, 25.5], [16.8, 40], [19.6, 44], [99, 44]];
+      const KTURN = [[27.1, 0], [28.0, 0], [33.0, 44], [35.4, 56]];
+      const K_AT = 27.1; // Kaleidoscope clicked
+      // Cursor: [t, world x, world y]; null before it enters.
+      const CUR = [[19.0, 2000, 1250], [19.5, 418, 134], [19.75, 418, 134], [20.2, 1200, 768], [20.4, 1200, 768], [20.7, 764, 292], [21.4, 1050, 458], [21.6, 1050, 458], [22.0, 1300, 680], [22.2, 1300, 680], [23.2, 1452, 800], [25.0, 1452, 800], [25.55, 480, 712], [25.65, 480, 712], [25.8, 600, 712], [25.95, 720, 712], [26.1, 840, 712], [26.25, 960, 712], [26.5, 960, 712], [27.05, 1300, 1648], [27.6, 1300, 1648], [28.3, 2200, 1900]];
+      const CLICKS = [19.6, 20.3, 20.7, 22.1, 23.3, 25.65, 25.8, 25.95, 26.1, 26.25, 27.1];
+      const STORM = { x0: 27, x1: 46, y0: 3, y1: 14, t0: 20.7, t1: 21.4 };
+      const MINE = [[8, 31, 25.65], [16, 31, 25.8], [24, 31, 25.95], [32, 31, 26.1], [40, 31, 26.25]];
+
+      const cam = (t) => { const [cx, cy, s] = keyed(CAM, t, ease); return { cx, cy, s }; };
+      const turnAt = (t) => keyed(TURN, t, (p) => p)[0];
+      const toScreen = (c, wx, wy) => [(wx - c.cx) * c.s + 960, (wy - c.cy) * c.s + 540];
+
+      // Kaleidoscope counts per turn (still/just-turned C count as cooperators).
+      const kCounts = D.kaleido.cls.map((row) => { let d = 0; for (let i = 0; i < row.length; i++) if (row[i] === '1' || row[i] === '2') d++; return [row.length - d, d, 0, 0, 0, 0, 0]; });
+
+      const world = document.getElementById('g-world'), board = document.getElementById('g-board'), ctx = board.getContext('2d');
+      const track = document.getElementById('g-track').getContext('2d');
+      const BX = 352, BY = 240, BS = 720;
+
+      function share(n, total) { return n === 0 ? '0%' : n === total ? '100%' : n / total < .005 ? '<1%' : n / total > .995 ? '>99%' : Math.round(n / total * 100) + '%'; }
+
+      function drawBoard(t, c) {
+        ctx.clearRect(0, 0, 1920, 1080);
+        const kal = t >= K_AT, n = kal ? 96 : 48, cw = BS / n * c.s; // cell size on screen
+        const [ox, oy] = toScreen(c, BX, BY);
+        ctx.save();
+        ctx.beginPath(); ctx.roundRect(ox, oy, BS * c.s, BS * c.s, 14 * c.s); ctx.clip();
+        ctx.fillStyle = '#e6e9f8'; ctx.fillRect(ox, oy, BS * c.s, BS * c.s);
+        let rows, light = null, prevRows = null, frac = 0;
+        if (kal) {
+          const kt = Math.min(D.kaleido.cls.length - 1, Math.max(0, keyed(KTURN, t, (p) => p)[0])), i = Math.floor(kt);
+          rows = D.kaleido.cls[i];
+        } else {
+          const tf = turnAt(t), i = Math.min(D.apple.cells.length - 1, Math.floor(tf));
+          rows = D.apple.cells[i]; light = D.apple.light[i]; frac = tf - i; prevRows = i > 0 && tf < 44 ? D.apple.cells[i - 1] : null;
+        }
+        const x0 = Math.max(0, Math.floor(-ox / cw)), x1 = Math.min(n - 1, Math.ceil((1920 - ox) / cw)), y0 = Math.max(0, Math.floor(-oy / cw)), y1 = Math.min(n - 1, Math.ceil((1080 - oy) / cw));
+        const g = Math.max(.5, cw * .11), glow = prevRows ? Math.max(0, 1 - frac * 2.2) : 0;
+        const eyes = cw >= 14 ? [] : null, rings = [];
+        for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) {
+          const i = y * n + x;
+          let kind = +rows[i], alpha = 1, color, square;
+          if (kal) { color = KALEIDO[kind]; square = kind === 1 || kind === 2; }
+          else {
+            if (t < .8 && x === 24 && y === 24) kind = 0; // the spike has not landed yet
+            const mine = MINE.find((m) => m[0] === x && m[1] === y && t >= m[2]);
+            if (mine) kind = 6;
+            color = COLORS[kind]; square = kind === 1; alpha = .3 + .7 * (+light[i]) / 9;
+            if (mine) alpha = 1;
+          }
+          const changed = glow > 0 && prevRows && prevRows[i] !== rows[i];
+          const k = changed ? 1 + .4 * glow : 1, side = (cw - 2 * g) * k, px = ox + x * cw + (cw - side) / 2, py = oy + y * cw + (cw - side) / 2;
+          ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.beginPath();
+          if (square) ctx.roundRect(px, py, side, side, cw * .1); else ctx.arc(px + side / 2, py + side / 2, side / 2, 0, Math.PI * 2);
+          ctx.fill();
+          if (changed) rings.push([px, py, side, square]);
+          if (eyes) eyes.push([ox + x * cw, oy + y * cw]);
+        }
+        ctx.globalAlpha = 1;
+        if (eyes) {
+          const e = Math.max(1, cw * .1); ctx.fillStyle = INK;
+          // blink: every piece closes its eyes for 2 frames in a staggered 4 s cycle
+          for (const [ex, ey] of eyes) { const ph = ((t + (ex * 7 + ey * 13) % 97 / 24) % 4); const h = ph < .07 ? e * .2 : e * 1.3; ctx.fillRect(ex + cw * .35 - e / 2, ey + cw * .38 + (e * 1.3 - h) / 2, e, h); ctx.fillRect(ex + cw * .65 - e / 2, ey + cw * .38 + (e * 1.3 - h) / 2, e, h); }
+        }
+        if (rings.length) {
+          ctx.strokeStyle = `rgba(35, 64, 196, ${glow * .9})`; ctx.lineWidth = Math.max(1, cw * .14); ctx.beginPath();
+          for (const [px, py, side, sq] of rings) { if (sq) ctx.roundRect(px, py, side, side, cw * .1); else { ctx.moveTo(px + side, py + side / 2); ctx.arc(px + side / 2, py + side / 2, side / 2, 0, Math.PI * 2); } }
+          ctx.stroke();
+        }
+        // The storm painted by the cursor (only while the paused apple board is shown).
+        if (!kal && t >= STORM.t0) {
+          const p = Math.min(1, (t - STORM.t0) / (STORM.t1 - STORM.t0)), xe = Math.round(lerp(STORM.x0, STORM.x1, p));
+          const sx = ox + STORM.x0 * cw, sy = oy + STORM.y0 * cw, w = (xe - STORM.x0 + 1) * cw, h = (STORM.y1 - STORM.y0 + 1) * cw;
+          ctx.fillStyle = 'rgba(35, 64, 196, .1)'; ctx.fillRect(sx, sy, w, h);
+          ctx.strokeStyle = 'rgba(35, 64, 196, .6)'; ctx.lineWidth = Math.max(1, cw * .09); ctx.lineCap = 'round'; ctx.beginPath();
+          for (let y = STORM.y0; y <= STORM.y1; y++) for (let x = STORM.x0; x <= xe; x++) { const q = (t / .65 + (y * n + x) * .618) % 1, cx = ox + x * cw, cy = oy + y * cw; ctx.moveTo(cx + cw * (.85 - q * .3), cy + cw * q * .6); ctx.lineTo(cx + cw * (.72 - q * .3), cy + cw * (q * .6 + .4)); }
+          ctx.stroke();
+          ctx.strokeStyle = INK; ctx.lineWidth = Math.max(1.5, cw * .12); ctx.setLineDash([cw * .5, cw * .3]); ctx.strokeRect(sx, sy, w, h); ctx.setLineDash([]);
+        }
+        ctx.restore();
+      }
+
+      function drawTrack(t) {
+        const W = 1424, H = 288, kal = t >= K_AT;
+        const counts = kal ? kCounts : D.apple.counts, total = kal ? 9216 : 2304;
+        const upto = kal ? Math.min(kCounts.length - 1, Math.floor(Math.max(0, keyed(KTURN, t, (p) => p)[0]))) : Math.min(D.apple.counts.length - 1, Math.floor(turnAt(t)));
+        const X = (k) => k / 99 * W, Y = (v) => H - v / total * H;
+        track.clearRect(0, 0, W, H);
+        for (let s = 0; s < 7; s++) {
+          track.beginPath();
+          for (let k = 0; k <= upto; k++) { const top = counts[k].slice(0, s + 1).reduce((a, b) => a + b, 0); if (k) track.lineTo(X(k), Y(top)); else track.moveTo(X(0), Y(top)); }
+          for (let k = upto; k >= 0; k--) track.lineTo(X(k), Y(counts[k].slice(0, s).reduce((a, b) => a + b, 0)));
+          track.fillStyle = COLORS[s]; track.fill();
+        }
+        const x = Math.min(W - 24, Math.max(24, X(upto)));
+        track.fillStyle = INK; track.fillRect(X(upto) - 2, 0, 4, H);
+        track.beginPath(); track.arc(x, H / 2, 20, 0, Math.PI * 2); track.fillStyle = '#ffd23a'; track.fill(); track.lineWidth = 6; track.strokeStyle = INK; track.stroke();
+        return { counts: counts[upto], total, upto };
+      }
+
+      const designerOpen = 22.15, lowerShift = 306;
+      function render(t) {
+        const c = cam(t);
+        world.style.transform = `translate(960px, 540px) scale(${c.s}) translate(${-c.cx}px, ${-c.cy}px)`;
+        drawBoard(t, c);
+        const { counts, total, upto } = drawTrack(t);
+        const kal = t >= K_AT;
+        // Turn counter, play state, tray shares and the leader.
+        document.getElementById('g-turn').textContent = 'Turn ' + upto;
+        const playing = t < 19.6 || t >= K_AT;
+        document.getElementById('g-playlabel').textContent = playing ? 'Pause' : 'Play';
+        document.getElementById('g-playicon').setAttribute('d', playing ? 'M6 4h4v16H6zM14 4h4v16h-4z' : 'M7 4l13 8-13 8z');
+        const shown = counts.slice();
+        if (!kal) for (const m of MINE) if (t >= m[2]) { shown[6]++; shown[+D.apple.cells[Math.min(44, upto)][m[1] * 48 + m[0]]]--; }
+        const top = Math.max(...shown), lead = shown.filter((v) => v === top).length === 1 ? shown.indexOf(top) : -1;
+        for (let s = 0; s < 7; s++) {
+          document.getElementById('g-share-' + s).textContent = share(shown[s], total);
+          document.getElementById('g-bar-' + s).style.width = (shown[s] / total * 100) + '%';
+        }
+        const badge = document.getElementById('g-lead');
+        badge.style.opacity = lead >= 0 ? 1 : 0; badge.style.top = (250 + Math.max(0, lead) * 66 + 18) + 'px'; badge.style.left = '1388px';
+        // Which tool is picked.
+        const tool = t >= 22.1 ? 6 : t >= 20.3 ? 'storm' : 1;
+        for (let s = 0; s < 7; s++) document.getElementById('g-row-' + s).classList.toggle('on', tool === s);
+        document.getElementById('g-tool-storm').classList.toggle('on', tool === 'storm');
+        document.getElementById('g-modename').textContent = tool === 'storm' ? 'Storm: paint weather where moves slip' : NAMES[tool];
+        document.getElementById('g-modechip').style.display = tool === 'storm' ? 'none' : 'inline-block';
+        document.getElementById('g-modechip').style.background = tool === 'storm' ? 'transparent' : COLORS[tool];
+        document.getElementById('g-modechip').style.borderRadius = tool === 1 ? '4px' : '50%';
+        document.getElementById('g-mode').firstChild.textContent = tool === 'storm' ? '' : 'Painting:';
+        // Designer: opens with the tray growing; the first move flips to C at 23.3.
+        const op = Math.min(1, Math.max(0, (t - designerOpen) / .3)), eo = 1 - Math.pow(1 - op, 3);
+        const des = document.getElementById('g-designer'); des.style.opacity = eo; des.style.transform = `scaleY(${.6 + .4 * eo})`;
+        document.getElementById('g-lower').style.transform = `translateY(${lowerShift * eo}px)`;
+        document.querySelector('.g-tray').style.height = (638 + lowerShift * eo) + 'px';
+        const flip = t >= 23.3;
+        document.getElementById('g-first-c').classList.toggle('on', flip); document.getElementById('g-first-d').classList.toggle('on', !flip);
+        document.getElementById('g-note-a').style.opacity = flip ? 0 : 1; document.getElementById('g-note-b').style.opacity = flip ? 1 : 0;
+        // Setup cards and legend after Kaleidoscope.
+        document.getElementById('g-setup-apple').classList.toggle('on', !kal); document.getElementById('g-setup-k').classList.toggle('on', kal);
+        document.getElementById('g-legend-std').style.opacity = kal ? 0 : 1; document.getElementById('g-legend-k').style.opacity = kal ? 1 : 0;
+        // Moments: pins and pills pop in when the app would announce them; a new game clears them.
+        D.marks.forEach((m, i) => {
+          const at = keyedTurnTime(m.shown), p = kal ? 0 : Math.min(1, Math.max(0, (t - at) / .27));
+          const s = p >= 1 ? 1 : .6 + .4 * (1 - Math.pow(1 - p, 3)) + (p > 0 && p < 1 ? .08 * Math.sin(p * Math.PI) : 0);
+          for (const id of ['g-pin-', 'g-pill-']) { const el = document.getElementById(id + i); el.style.opacity = p; el.style.transform = `scale(${s})`; }
+        });
+        // Cursor.
+        const cur = document.getElementById('g-cursor');
+        if (t < CUR[0][0] || t > CUR[CUR.length - 1][0]) cur.style.opacity = 0;
+        else {
+          const [wx, wy] = keyed(CUR, t, ease), [sx, sy] = toScreen(c, wx, wy);
+          const press = CLICKS.some((k) => t >= k && t < k + .12);
+          cur.style.opacity = 1; cur.style.transform = `translate(${sx - 6}px, ${sy - 4}px) scale(${press ? .82 : 1})`;
+        }
+      }
+      // The time at which the apple board reaches a given turn (inverse of TURN, first crossing).
+      function keyedTurnTime(turn) {
+        for (let i = 1; i < TURN.length; i++) { const [ta, va] = TURN[i - 1], [tb, vb] = TURN[i]; if (vb >= turn && vb > va) return ta + (turn - va) / (vb - va) * (tb - ta); }
+        return 99;
+      }
+
+      // ---- DOM tweens (titles and banners), plus the clock that drives render(t).
+      const tl = gsap.timeline({ paused: true });
+      const clock = { t: 0 };
+      tl.fromTo(clock, { t: 0 }, { t: 35.4, duration: 35.4, ease: 'none', onUpdate: () => render(clock.t) }, 0);
+      // The spike drops into the centre cell and squashes into the board's square token.
+      tl.set('#g-spike', { y: -620, scaleX: 1, scaleY: 1.1, opacity: 1, transformOrigin: '50% 95%' }, 0);
+      tl.to('#g-spike', { y: 0, scaleY: 1, duration: .4, ease: 'back.out(1.8)' }, .4);
+      tl.to('#g-spike', { scaleX: .62, scaleY: .5, opacity: 0, duration: .25, ease: 'power2.in' }, 1.05);
+      const banner = (id, at, len) => {
+        tl.fromTo(id, { scale: 1.18, opacity: 0 }, { scale: 1, opacity: 1, duration: .2, ease: 'back.out(2.2)' }, at);
+        tl.to(id, { y: 40, opacity: 0, duration: .3, ease: 'power2.in' }, at + len - .32);
+      };
+      banner('#g-b1-in', 3.3, 2.35); banner('#g-b2-in', 5.8, 1.95); banner('#g-b3-in', 11.2, 2.2); banner('#g-b4-in', 17.9, 2.1);
+      tl.fromTo('#g-title-1', { scale: 1.25, opacity: 0 }, { scale: 1, opacity: 1, duration: .22, ease: 'back.out(2.2)' }, 8.75);
+      tl.fromTo('#g-title-2', { scale: 1.25, opacity: 0 }, { scale: 1, opacity: 1, duration: .22, ease: 'back.out(2.2)' }, 8.9);
+      tl.to(['#g-title-1', '#g-title-2'], { opacity: 0, x: -60, duration: .3, ease: 'power2.in', stagger: .05 }, 10.5);
+      // The claim stamps in, its words leave, and the plate grows into the end card's lid.
+      tl.fromTo('#g-claim', { scale: 1.15, opacity: 0 }, { scale: 1, opacity: 1, duration: .22, ease: 'back.out(2.2)' }, 32.8);
+      tl.to('#g-claim-text', { opacity: 0, duration: .18 }, 34.85);
+      tl.to('#g-claim', { scaleX: 1.6, scaleY: 3.7, borderRadius: 0, boxShadow: '0 0 0 #142a8f', duration: .4, ease: 'power3.in' }, 34.95);
+      window.__timelines['game'] = tl;
+      render(0);
+      window.addEventListener('hf-seek', (e) => { if (typeof e.detail?.time === 'number' && e.detail.time < 35.4) render(e.detail.time); });
+    })();
+  </script>
+</template>

@@ -49,8 +49,12 @@ export function normalized(weights: number[]) {
 export function payoff(a: Action, b: Action): [number, number] {
   return a === b ? (a === 0 ? [3, 3] : [1, 1]) : (a === 0 ? [0, 5] : [5, 0]);
 }
+// A piece designed on the board: a reactive rule. The six v1 strategies and their encounters are unchanged.
+export interface Custom { first: Action; afterC: Action; afterD: Action; forgives: boolean }
+export type Player = Strategy | Custom;
 interface State { own: Action; seen: Action; points: number; triggered: boolean }
-function intention(id: Strategy, state: State, round: number, forgiveness: number, draw: number): Action {
+function intention(id: Player, state: State, round: number, forgiveness: number, draw: number): Action {
+  if (typeof id === 'object') return round === 0 ? id.first : state.seen === 0 ? id.afterC : id.forgives && draw < forgiveness ? 0 : id.afterD;
   if (id === 'cooperate') return 0;
   if (id === 'defect') return 1;
   if (round === 0) return 0;
@@ -59,8 +63,9 @@ function intention(id: Strategy, state: State, round: number, forgiveness: numbe
   if (id === 'generous' && state.seen === 1 && draw < forgiveness) return 0;
   return state.seen;
 }
-export function play(a: Strategy, b: Strategy, rounds: number, key: string, rates: [number, number], forgiveness: number, capture = false) {
-  if (!IDS.includes(a) || !IDS.includes(b) || !Number.isInteger(rounds) || rounds < 1 || rounds > 500 || rates.some(x => !Number.isFinite(x) || x < 0 || x > 1) || !Number.isFinite(forgiveness) || forgiveness < 0 || forgiveness > 1) throw new Error('Invalid encounter settings.');
+const valid = (p: Player) => typeof p === 'object' ? [p.first, p.afterC, p.afterD].every(x => x === 0 || x === 1) : IDS.includes(p);
+export function play(a: Player, b: Player, rounds: number, key: string, rates: [number, number], forgiveness: number, capture = false) {
+  if (!valid(a) || !valid(b) || !Number.isInteger(rounds) || rounds < 1 || rounds > 500 || rates.some(x => !Number.isFinite(x) || x < 0 || x > 1) || !Number.isFinite(forgiveness) || forgiveness < 0 || forgiveness > 1) throw new Error('Invalid encounter settings.');
   const streams = ['action-0', 'action-1', 'observation-0', 'observation-1', 'forgive-0', 'forgive-1'].map(event => randomStream(`${key}|${event}`));
   const states: State[] = [0, 1].map(() => ({ own: 0, seen: 0, points: 3, triggered: false }));
   const totals: [number, number] = [0, 0], cooperation: [number, number] = [0, 0], trace: Round[] = [];
