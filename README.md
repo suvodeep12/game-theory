@@ -1,6 +1,7 @@
 # Who inherits the world?
 
 **Live:** <https://suvodeep12.github.io/game-theory/>
+**Watch the film:** [One bad apple, 39 s](https://github.com/suvodeep12/game-theory/releases/download/film-one-bad-apple/one-bad-apple.mp4) ([release notes and credits](https://github.com/suvodeep12/game-theory/releases/tag/film-one-bad-apple))
 
 A living prisoner's dilemma world in the browser. Six strategies share a 48 × 48 grid; every generation each creature plays its eight neighbours and copies whoever nearby scored best. Paint in defectors or storms of mistakes, rewind, and rewrite history. "Game Theory" is a working name.
 
